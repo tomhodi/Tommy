@@ -12,7 +12,11 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Ask me anything"
-        android:inputType="textPersonName"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:layout_marginBottom="14dp"
+        android:layout_above="@+id/floatingActionButton"
+        android:layout_centerHorizontal="true" />
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="16dp"
         android:layout_above="@+id/floatingActionButton"
