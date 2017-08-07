@@ -1,6 +1,7 @@
 package com.example.tommy.tommy;
 
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,25 +17,49 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
+    private EditText etName, etUsername, etDateOfBirth, etPassword;
+    private String username, password, name, dateOfBirth;
+    Button bRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        final EditText etName = (EditText) findViewById(R.id.etName);
-        final EditText etUsername = (EditText) findViewById(R.id.etUsername);
-        final EditText etDateOfBirth = (EditText) findViewById(R.id.etDateOfBirth);
-        final EditText etPassword = (EditText) findViewById(R.id.etPassword);
+        etName = (EditText) findViewById(R.id.etName);
+        etUsername = (EditText) findViewById(R.id.etUsername);
+        etDateOfBirth = (EditText) findViewById(R.id.etDateOfBirth);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        bRegister = (Button) findViewById(R.id.bRegister);
 
-        final Button bRegister = (Button) findViewById(R.id.bRegister);
+        etDateOfBirth.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    DateDialog dateDialog = new DateDialog(v);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    dateDialog.show(ft, "DatePicker");
+                }
+            }
+        });
+
+        final AlertDialog registerAlertDialog = new AlertDialog.Builder(RegisterActivity.this)
+                .setMessage("Register Failed")
+                .setNegativeButton("Retry", null)
+                .create();
+
         bRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                final String username = etUsername.getText().toString();
-                final String password = etPassword.getText().toString();
-                final String name = etName.getText().toString();
-                final String dateOfBirth = etDateOfBirth.getText().toString();
+                username = etUsername.getText().toString();
+                password = etPassword.getText().toString();
+                name = etName.getText().toString();
+                dateOfBirth = etDateOfBirth.getText().toString();
+
+                if (!validateRegister()) {
+                    registerAlertDialog.show();
+                    return;
+                }
 
                 Response.Listener<String> responseListener = new Response.Listener<String>(){
 
@@ -48,12 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 RegisterActivity.this.startActivity(intent);
                             }
                             else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("Register Failed")
-                                        .setNegativeButton("Retry", null)
-                                        .create()
-                                        .show();
-
+                                registerAlertDialog.show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -66,5 +86,31 @@ public class RegisterActivity extends AppCompatActivity {
                 queue.add(registerRequest);
             }
         });
+    }
+
+    private void register() {
+
+    }
+
+    private boolean validateRegister() {
+        boolean valid = true;
+        if (name.isEmpty()) {
+            etName.setError("Please enter a valid name");
+            valid = false;
+        }
+        if (username.isEmpty()) {
+            etUsername.setError("Please enter a valid username");
+            valid = false;
+        }
+        if (dateOfBirth.isEmpty()) {
+            etDateOfBirth.setError("Please enter a valid date of birth");
+            valid = false;
+        }
+        if (password.isEmpty()) {
+            etPassword.setError("Please enter a valid password");
+            valid = false;
+        }
+
+        return valid;
     }
 }
