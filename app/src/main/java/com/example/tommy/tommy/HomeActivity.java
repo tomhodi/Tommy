@@ -13,12 +13,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +45,7 @@ import static android.R.attr.port;
 import static android.R.attr.x;
 import static android.R.attr.y;
 import static com.example.tommy.tommy.R.id.etUserText;
+import static com.example.tommy.tommy.R.id.spinner;
 
 public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     private final String host = "192.168.231.1";
@@ -67,6 +73,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         final String name = intent.getStringExtra("name");
         final String dateOfBirth = intent.getStringExtra("date_of_birth");
 
+        // set main action listener
         etUserText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -181,6 +188,32 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 textToSpeech.setLanguage(Locale.getDefault());
         } else if (status == TextToSpeech.ERROR) {
             Toast.makeText(this, "Sorry! Text To Speech failed...", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.my_menu, menu);
+        return true;
+    }
+
+    public void onGroupItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.group_about_us:
+                Log.d("CREATION", "group_about_us");
+                startActivity(new Intent(HomeActivity.this, AboutUs.class));
+                break;
+            case R.id.group_my_profile:
+                Log.d("CREATION", "group_my_profile");
+                break;
+            case R.id.group_volume_settings:
+                Log.d("CREATION", "group_volume_settings");
+                break;
+            case R.id.group_log_out:
+                Log.d("CREATION", "group_log_out");
+                break;
         }
     }
 }

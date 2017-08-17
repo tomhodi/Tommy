@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/Msettings_menu"
+        android:icon="@drawable/sec_fifty"
+        android:title="@string/SettingsTitle"
+        android:visible="false"
+        tools:icon="@drawable/sec_fifty" />
+    <group android:id="@+id/group">
+        <item
+            android:id="@+id/group_about_us"
+            android:icon="@mipmap/ic_launcher"
+            android:onClick="onGroupItemClick"
+            android:title="@string/About_Us" />
+        <item
+            android:id="@+id/group_my_profile"
+            android:onClick="onGroupItemClick"
+            android:title="@string/My_Profile" />
+        <item
+            android:id="@+id/group_volume_settings"
+            android:onClick="onGroupItemClick"
+            android:title="@string/Volume_Settings" />
+        <item
+            android:id="@+id/group_log_out"
+            android:onClick="onGroupItemClick"
+            android:title="@string/Log_Out" />
+    </group>
+</menu>

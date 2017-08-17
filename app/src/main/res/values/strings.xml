@@ -1,6 +1,25 @@
 <resources>
     <string name="app_name">Tommy</string>
+    <string name="SettingsTitle">Settings</string>
+    <string name="About_Us">About Us</string>
+    <string name="My_Profile">My Profile</string>
+    <string name="Volume_Settings">Volume Settings</string>
+    <string name="Log_Out">Log Out</string>
     <string name="title_activity_login2">Sign in</string>
+
+    <!-- Strings related to Myprofile drop down menu -->
+    <string-array name="ProfileNames">
+        <item>View Profile</item>
+        <item>Achievements</item>
+        <item>Log out</item>
+    </string-array>
+
+    <!-- Strings related to Settings drop down menu -->
+    <string-array name="SettingsNames">
+        <item>Edit Profile</item>
+        <item>Sounds</item>
+        <item>Log out</item>
+    </string-array>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -15,3 +34,4 @@
         completions."
     </string>
 </resources>
+

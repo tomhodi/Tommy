@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -24,12 +25,11 @@
         android:id="@+id/tvResponse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etUserText"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/etUserText"
-        android:layout_marginTop="11dp"
         android:text="What can I help you with?"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="22dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/bMic"
@@ -42,5 +42,22 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="14dp" />
+
+    <!--<Spinner-->
+    <!--android:id="@+id/MyProfileMenu"-->
+    <!--android:layout_width="100dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_alignParentEnd="true"></Spinner>-->
+
+
+    <!--<ImageButton-->
+    <!--android:id="@+id/SettingsButton"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_alignParentStart="true"-->
+    <!--app:srcCompat="@drawable/fifty" />-->
+
 
 </RelativeLayout>
