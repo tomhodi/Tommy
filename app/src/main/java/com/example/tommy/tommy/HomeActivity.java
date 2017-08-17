@@ -203,7 +203,6 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         switch (item.getItemId()) {
             case R.id.group_about_us:
                 Log.d("CREATION", "group_about_us");
-                startActivity(new Intent(HomeActivity.this, AboutUs.class));
                 break;
             case R.id.group_my_profile:
                 Log.d("CREATION", "group_my_profile");
