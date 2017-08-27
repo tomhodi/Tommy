@@ -20,13 +20,25 @@
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity" />
+        <activity
+            android:name=".RegisterActivity"
+            android:parentActivityName=".LoginActivity" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".AboutUs" />
+        <activity
+            android:name=".AboutUsActivity"
+            android:label="About Us"
+            android:parentActivityName=".HomeActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".HomeActivity" />
+        <activity
+            android:name=".MyProfileActivity"
+            android:label="My Profile"
+            android:parentActivityName=".HomeActivity" />
     </application>
 
 </manifest>

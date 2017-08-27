@@ -1,51 +1,32 @@
 package com.example.tommy.tommy;
 
-import android.app.ActivityGroup;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Locale;
-
-import static android.R.attr.action;
-import static android.R.attr.host;
-import static android.R.attr.name;
-import static android.R.attr.port;
-import static android.R.attr.x;
-import static android.R.attr.y;
-import static com.example.tommy.tommy.R.id.etUserText;
-import static com.example.tommy.tommy.R.id.spinner;
 
 public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     private final String host = "192.168.231.1";
@@ -200,19 +181,24 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     public void onGroupItemClick(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
-            case R.id.group_about_us:
-                Log.d("CREATION", "group_about_us");
+            case R.id.groupAboutUs:
+                intent = new Intent(HomeActivity.this, AboutUsActivity.class);
                 break;
-            case R.id.group_my_profile:
-                Log.d("CREATION", "group_my_profile");
+            case R.id.groupMyProfile:
+                intent = new Intent(HomeActivity.this, MyProfileActivity.class);
                 break;
-            case R.id.group_volume_settings:
-                Log.d("CREATION", "group_volume_settings");
+            case R.id.groupSettings:
+                intent = new Intent(HomeActivity.this, SettingsActivity.class);
                 break;
-            case R.id.group_log_out:
-                Log.d("CREATION", "group_log_out");
+            case R.id.groupLogOut:
+                intent = new Intent(HomeActivity.this, LoginActivity.class);
                 break;
+            default:
+                return;
         }
+
+        HomeActivity.this.startActivity(intent);
     }
 }
