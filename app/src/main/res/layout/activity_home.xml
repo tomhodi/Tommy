@@ -43,13 +43,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="14dp" />
 
-    <!--<Spinner-->
-    <!--android:id="@+id/MyProfileMenu"-->
-    <!--android:layout_width="100dp"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_alignParentEnd="true"></Spinner>-->
-
 
     <!--<ImageButton-->
     <!--android:id="@+id/SettingsButton"-->

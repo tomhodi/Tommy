@@ -8,6 +8,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +29,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static android.R.attr.name;
+
 public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     private final String host = "192.168.231.1";
     private final int port = 2345;
@@ -35,7 +38,9 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private EditText etUserText;
     private FloatingActionButton bMic;
     private String userText;
-    private String username;
+    private String userName;
+    private String name;
+    private String dateOfBirth;
     private TextToSpeech textToSpeech = null;
 
     public static final int VOICE_RECOGNITION_CODE = 0;
@@ -50,9 +55,11 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         bMic = (FloatingActionButton) findViewById(R.id.bMic);
 
         Intent intent = getIntent();
-        username = intent.getStringExtra("username");
-        final String name = intent.getStringExtra("name");
-        final String dateOfBirth = intent.getStringExtra("date_of_birth");
+        userName = intent.getStringExtra("username");
+        Log.d("aaaaaaaaa", userName);
+        name = intent.getStringExtra("name");
+        dateOfBirth = intent.getStringExtra("dateOfBirth");
+
 
         // set main action listener
         etUserText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -129,7 +136,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     Socket clientSocket = new Socket(host, port);
                     OutputStream outToServer = clientSocket.getOutputStream();
                     DataOutputStream out = new DataOutputStream(outToServer);
-                    out.writeUTF("Query[" + username + "]: " + userText);
+                    out.writeUTF("Query[" + userName + "]: " + userText);
                     InputStream inFromServer = clientSocket.getInputStream();
                     DataInputStream in = new DataInputStream(inFromServer);
                     final String response = in.readUTF();
@@ -188,6 +195,9 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 break;
             case R.id.groupMyProfile:
                 intent = new Intent(HomeActivity.this, MyProfileActivity.class);
+                intent.putExtra("userName", userName);
+                intent.putExtra("name", name);
+                intent.putExtra("dateOfBirth", dateOfBirth);
                 break;
             case R.id.groupSettings:
                 intent = new Intent(HomeActivity.this, SettingsActivity.class);
@@ -198,7 +208,6 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
             default:
                 return;
         }
-
         HomeActivity.this.startActivity(intent);
     }
 }
