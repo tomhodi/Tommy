@@ -28,10 +28,9 @@ public class MyProfileActivity extends AppCompatActivity {
         userName = intent.getStringExtra("userName");
         dateOfBirth = intent.getStringExtra("dateOfBirth");
         tvKnow.setText("Hey " + userName + ", this is what I know about you so far : ");
-        Log.d("aaaaaaaaa", name);
-        Log.d("aaaaaaaaa", dateOfBirth);
         tvNameContent.setText(name);
-        tvDateOfBirthContent.setText(dateOfBirth);
+        setName();
+        setDateOfBirthText();
     }
 
     @Override
@@ -55,5 +54,38 @@ public class MyProfileActivity extends AppCompatActivity {
                 Log.d("Kosher", String.valueOf(isSelected));
                 break;
         }
+    }
+
+    public void setName() {
+        if (name.equals("")) {
+            return;
+        }
+        String modifiedName = "";
+        char first = name.charAt(0);
+        first = Character.toUpperCase(first);
+        int secIndex = name.indexOf(' ') + 1;
+        if (secIndex >= name.length()) {
+            return;
+        }
+        char sec = name.charAt(secIndex);
+        sec = Character.toUpperCase(sec);
+        modifiedName = first + name.substring(1, secIndex) + sec + name.substring(secIndex + 1, name.length());
+        System.out.println(modifiedName);
+        tvNameContent.setText(modifiedName);
+    }
+
+    public void setDateOfBirthText() {
+        if (dateOfBirth.equals("")) {
+            return;
+        }
+        String reversedDate = "";
+        String[] parts = dateOfBirth.split("-");
+        if (parts.length > 0) {
+            for (int i = parts.length - 1; i >= 0; i--) {
+                reversedDate = reversedDate.concat(parts[i] + '/');
+            }
+            reversedDate = reversedDate.substring(0, reversedDate.length() - 1);
+        }
+        tvDateOfBirthContent.setText(reversedDate);
     }
 }

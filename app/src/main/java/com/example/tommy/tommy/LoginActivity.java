@@ -54,22 +54,25 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            Log.d("ResponseValue", response);
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {
                                 String name = jsonResponse.getString("name");
                                 String dateOfBirth = jsonResponse.getString("date_of_birth");
+                                //boolean Kosher = jsonResponse.getBoolean("Kosher");
+                                //Log.d("KosherValue", String.valueOf(Kosher));
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                 intent.putExtra("username", username);
                                 intent.putExtra("name", name);
                                 intent.putExtra("dateOfBirth", dateOfBirth);
-                                Log.d("CREATION", dateOfBirth);
                                 LoginActivity.this.startActivity(intent);
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setMessage("Login Failed")
                                         .setNegativeButton("Retry", null)
                                         .create()
+
                                         .show();
 
                             }
