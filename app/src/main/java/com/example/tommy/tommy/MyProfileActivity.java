@@ -70,7 +70,6 @@ public class MyProfileActivity extends AppCompatActivity {
         char sec = name.charAt(secIndex);
         sec = Character.toUpperCase(sec);
         modifiedName = first + name.substring(1, secIndex) + sec + name.substring(secIndex + 1, name.length());
-        System.out.println(modifiedName);
         tvNameContent.setText(modifiedName);
     }
 
