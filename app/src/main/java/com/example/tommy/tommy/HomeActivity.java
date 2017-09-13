@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import static android.R.attr.name;
+import static android.R.attr.password;
 
 public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     private final String host = "192.168.231.1";
@@ -39,8 +40,11 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private FloatingActionButton bMic;
     private String userText;
     private String userName;
+    private String password;
     private String name;
     private String dateOfBirth;
+    private String kosher;
+    private String glutenFree;
     private TextToSpeech textToSpeech = null;
 
     public static final int VOICE_RECOGNITION_CODE = 0;
@@ -56,9 +60,12 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         Intent intent = getIntent();
         userName = intent.getStringExtra("username");
-        Log.d("aaaaaaaaa", userName);
         name = intent.getStringExtra("name");
         dateOfBirth = intent.getStringExtra("dateOfBirth");
+        kosher = intent.getStringExtra("kosher");
+        glutenFree = intent.getStringExtra("glutenFree");
+        dateOfBirth = intent.getStringExtra("dateOfBirth");
+        password = intent.getStringExtra("password");
 
 
         // set main action listener
@@ -196,8 +203,12 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
             case R.id.groupMyProfile:
                 intent = new Intent(HomeActivity.this, MyProfileActivity.class);
                 intent.putExtra("userName", userName);
+                intent.putExtra("password", password);
                 intent.putExtra("name", name);
                 intent.putExtra("dateOfBirth", dateOfBirth);
+                intent.putExtra("kosher", kosher);
+                intent.putExtra("glutenFree", glutenFree);
+
                 break;
             case R.id.groupSettings:
                 intent = new Intent(HomeActivity.this, SettingsActivity.class);

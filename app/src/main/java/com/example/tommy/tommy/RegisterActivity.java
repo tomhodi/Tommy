@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,10 +18,18 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.R.color.white;
+
+
 public class RegisterActivity extends AppCompatActivity {
-    private EditText etName, etUsername, etDateOfBirth, etPassword;
-    private String username, password, name, dateOfBirth;
-    Button bRegister;
+    private static final int viewMaxLength = 16;
+    private static final String invalidStrLen = "must be none empty and contain at most " + String.valueOf(viewMaxLength) + " characters.";
+    private static final String invalidStrFirstChar = "first character must not be white space.";
+    private static final String invalidDate = "Please pick a Date.";
+
+    private EditText etFirstName, etLastName, etUserName, etDateOfBirth, etPassword;
+    private String name, userName, password, firstName, lastName, dateOfBirth;
+    private Button bRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +37,21 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        etName = (EditText) findViewById(R.id.etName);
-        etUsername = (EditText) findViewById(R.id.etUsername);
+        // get Views
+        etFirstName = (EditText) findViewById(R.id.etFirstName);
+        etLastName = (EditText) findViewById(R.id.etLastName);
+        etUserName = (EditText) findViewById(R.id.etUserName);
         etDateOfBirth = (EditText) findViewById(R.id.etDateOfBirth);
         etPassword = (EditText) findViewById(R.id.etPassword);
         bRegister = (Button) findViewById(R.id.bRegister);
 
+        // set date of birth listener
         etDateOfBirth.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     DateDialog dateDialog = new DateDialog(v);
+
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     dateDialog.show(ft, "DatePicker");
                 }
@@ -53,11 +66,11 @@ public class RegisterActivity extends AppCompatActivity {
         bRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                username = etUsername.getText().toString();
+                firstName = etFirstName.getText().toString();
+                lastName = etLastName.getText().toString();
+                userName = etUserName.getText().toString();
                 password = etPassword.getText().toString();
-                name = etName.getText().toString();
                 dateOfBirth = etDateOfBirth.getText().toString();
-
                 if (!validateRegister()) {
                     registerAlertDialog.show();
                     return;
@@ -82,8 +95,8 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 };
-
-                RegisterRequest registerRequest = new RegisterRequest(username, password, name, dateOfBirth, responseListener);
+                name = firstName.concat(lastName);
+                RegisterRequest registerRequest = new RegisterRequest(userName, password, name, dateOfBirth, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
             }
@@ -103,20 +116,34 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean validateRegister() {
         boolean valid = true;
-        if (name.isEmpty()) {
-            etName.setError("Please enter a valid name");
+        if (firstName.length() > viewMaxLength || firstName.isEmpty()) {
+            etFirstName.setError("First Name " + invalidStrLen);
             valid = false;
         }
-        if (username.isEmpty()) {
-            etUsername.setError("Please enter a valid username");
+        if (!firstName.isEmpty() && Character.isWhitespace(firstName.charAt(0))) {
+            etFirstName.setError("First Name " + invalidStrFirstChar);
+            valid = false;
+        }
+        if (lastName.length() > viewMaxLength || lastName.isEmpty()) {
+            etLastName.setError("Last Name " + invalidStrLen);
+            valid = false;
+        }
+        if (!firstName.isEmpty() && Character.isWhitespace(lastName.charAt(0))) {
+            etFirstName.setError("Last Name " + invalidStrFirstChar);
+            valid = false;
+        }
+        if (userName.length() > viewMaxLength || userName.isEmpty()) {
+            etUserName.setError("userName " + invalidStrLen);
             valid = false;
         }
         if (dateOfBirth.isEmpty()) {
-            etDateOfBirth.setError("Please enter a valid date of birth");
+            etDateOfBirth.setError(invalidDate);
             valid = false;
         }
-        if (password.isEmpty()) {
-            etPassword.setError("Please enter a valid password");
+        Log.d("password: ", password);
+        if (password.length() > viewMaxLength || password.isEmpty()) {
+            Log.d("password: ", password);
+            etFirstName.setError("Password " + invalidStrLen);
             valid = false;
         }
 
