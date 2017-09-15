@@ -36,6 +36,7 @@ public class MyProfileActivity extends AppCompatActivity {
         cbKosher = (CheckBox) findViewById(R.id.cbKosher);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
+
         // get variables from Home activity
         name = intent.getStringExtra("name");
         userName = intent.getStringExtra("userName");
@@ -47,7 +48,6 @@ public class MyProfileActivity extends AppCompatActivity {
         // set user's data to the different Views
         tvKnow.setText("Hey " + userName + ", this is what I know about you so far : ");
         tvNameContent.setText(name);
-        //setName();
         setDateOfBirthText();
         if (kosher.equals("1")) {
             cbKosher.setChecked(true);
@@ -88,22 +88,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 }
                 break;
         }
-    }
-
-    public void setName() {
-        if (name.equals("")) {
-            return;
-        }
-        char first = name.charAt(0);
-        first = Character.toUpperCase(first);
-        int secIndex = name.indexOf(' ') + 1;
-        if (secIndex >= name.length()) {
-            return;
-        }
-        char sec = name.charAt(secIndex);
-        sec = Character.toUpperCase(sec);
-        String modifiedName = first + name.substring(1, secIndex) + sec + name.substring(secIndex + 1, name.length());
-        tvNameContent.setText(modifiedName);
     }
 
     public void updatePref() {

@@ -14,8 +14,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="75dp"
         android:background="@android:color/background_light"
         android:text="@string/about_us_content"
+        android:textSize="18sp"
         android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="123dp"
+        app:srcCompat="@drawable/skyline" />
 </RelativeLayout>

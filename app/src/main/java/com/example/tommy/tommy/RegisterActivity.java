@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +17,6 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static android.R.color.white;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -26,9 +24,10 @@ public class RegisterActivity extends AppCompatActivity {
     private static final String invalidStrLen = "must be none empty and contain at most " + String.valueOf(viewMaxLength) + " characters.";
     private static final String invalidStrFirstChar = "first character must not be white space.";
     private static final String invalidDate = "Please pick a Date.";
+    private static final String userNameOccupied = "is already occupied, please choose other User Name";
 
     private EditText etFirstName, etLastName, etUserName, etDateOfBirth, etPassword;
-    private String name, userName, password, firstName, lastName, dateOfBirth;
+    private String name, userName, password, firstName, lastName, dateOfBirth, reversedDate;
     private Button bRegister;
 
     @Override
@@ -50,10 +49,11 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    DateDialog dateDialog = new DateDialog(v);
 
+                    DateDialog dateDialog = new DateDialog(v);
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     dateDialog.show(ft, "DatePicker");
+
                 }
             }
         });
@@ -83,11 +83,14 @@ public class RegisterActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
+                            boolean userNameExist = jsonResponse.getBoolean("userNameExist");
                             if (success){
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 RegisterActivity.this.startActivity(intent);
-                            }
-                            else{
+                            } else if (userNameExist) {
+                                etUserName.setError("User Name " + userNameOccupied);
+                                return;
+                            } else {
                                 registerAlertDialog.show();
                             }
                         } catch (JSONException e) {
@@ -95,12 +98,36 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 };
-                name = firstName.concat(lastName);
+                setName();
                 RegisterRequest registerRequest = new RegisterRequest(userName, password, name, dateOfBirth, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
             }
         });
+    }
+
+    public void setName() {
+        char first = firstName.charAt(0);
+        char sec = lastName.charAt(0);
+        first = Character.toUpperCase(first);
+        sec = Character.toUpperCase(sec);
+        name = first + firstName.substring(1, firstName.length()) + ' ' + sec + lastName.substring(1, lastName.length());
+    }
+
+    public void setDate() {
+        if (dateOfBirth.equals("")) {
+            return;
+        }
+        String reversedDate = "";
+        String[] parts = dateOfBirth.split("-");
+        if (parts.length > 0) {
+            for (int i = parts.length - 1; i >= 0; i--) {
+                reversedDate = reversedDate.concat(parts[i] + '/');
+            }
+            reversedDate = reversedDate.substring(0, reversedDate.length() - 1);
+        }
+
+        etDateOfBirth.setText(reversedDate);
     }
 
     @Override
@@ -128,22 +155,20 @@ public class RegisterActivity extends AppCompatActivity {
             etLastName.setError("Last Name " + invalidStrLen);
             valid = false;
         }
-        if (!firstName.isEmpty() && Character.isWhitespace(lastName.charAt(0))) {
-            etFirstName.setError("Last Name " + invalidStrFirstChar);
+        if (!lastName.isEmpty() && Character.isWhitespace(lastName.charAt(0))) {
+            etLastName.setError("Last Name " + invalidStrFirstChar);
             valid = false;
         }
         if (userName.length() > viewMaxLength || userName.isEmpty()) {
-            etUserName.setError("userName " + invalidStrLen);
+            etUserName.setError("User Name " + invalidStrLen);
             valid = false;
         }
         if (dateOfBirth.isEmpty()) {
             etDateOfBirth.setError(invalidDate);
             valid = false;
         }
-        Log.d("password: ", password);
         if (password.length() > viewMaxLength || password.isEmpty()) {
-            Log.d("password: ", password);
-            etFirstName.setError("Password " + invalidStrLen);
+            etPassword.setError("Password " + invalidStrLen);
             valid = false;
         }
 
