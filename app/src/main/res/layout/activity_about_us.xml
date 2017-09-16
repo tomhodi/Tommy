@@ -7,27 +7,65 @@
     android:background="@android:color/background_light"
     tools:context="com.example.tommy.tommy.AboutUsActivity">
 
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
         android:background="@android:color/background_light"
         android:text="@string/about_us_content"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:background="@android:color/background_light"
+        android:text="@string/about_us_example_1"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:background="@android:color/background_light"
+        android:text="@string/about_us_example_2"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:background="@android:color/background_light"
+        android:text="@string/about_us_example_3"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:srcCompat="@drawable/skyline"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="123dp"
-        app:srcCompat="@drawable/skyline" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

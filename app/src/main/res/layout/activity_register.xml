@@ -63,14 +63,14 @@
         android:id="@+id/etDateOfBirth"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etPassword"
+        android:layout_alignStart="@+id/etPassword"
+        android:layout_below="@+id/etPassword"
         android:ems="10"
         android:hint="Date Of Birth"
         android:inputType="date"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_alignLeft="@+id/etPassword"
-        android:layout_alignStart="@+id/etPassword"
-        android:layout_below="@+id/etPassword" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/bRegister"
