@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,13 +27,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
-
-import static android.R.attr.name;
-import static android.R.attr.password;
+import java.util.Map;
+import java.util.Set;
 
 public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
-    private final String host = "192.168.231.1";
+    public boolean isMute = false;
+    private final String host = "192.168.1.4";
     private final int port = 2345;
     private TextView tvResponse;
     private EditText etUserText;
@@ -46,9 +47,12 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private String kosher;
     private String glutenFree;
     private TextToSpeech textToSpeech = null;
+    private Map<String, Voice> voiceMap = null;
+    private ArrayList<String> voices = new ArrayList<>();
 
     public static final int VOICE_RECOGNITION_CODE = 0;
     public static final int TEXT_TO_SPEECH_CODE = 1;
+    public static final int SETTINGS_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,12 +121,21 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
             case TEXT_TO_SPEECH_CODE:
                 if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
                     //the user has the necessary data - create the TTS
-                    textToSpeech = new TextToSpeech(this, this);
+                    textToSpeech = new TextToSpeech(this, this, "com.google.android.tts");
                 } else {
                     //no data - install it now
                     Intent installTTSIntent = new Intent();
                     installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
                     startActivity(installTTSIntent);
+                }
+                break;
+            case SETTINGS_CODE:
+                if (resultCode == RESULT_OK) {
+                    isMute = data.getBooleanExtra("is_mute", false);
+                    String selectedVoice = data.getStringExtra("selected_voice");
+                    if (textToSpeech != null && voiceMap != null && voiceMap.containsKey(selectedVoice)) {
+                        textToSpeech.setVoice(voiceMap.get(selectedVoice));
+                    }
                 }
                 break;
         }
@@ -164,7 +177,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     private void speakResponse() {
-        if (textToSpeech == null) {
+        if (textToSpeech == null || isMute) {
             return;
         }
         String response = tvResponse.getText().toString();
@@ -175,12 +188,28 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
+    private Map<String, Voice> createVoiceMap(Set<Voice> voices, String prefix) {
+        Map<String, Voice> result = new HashMap<>();
+        if (voices != null) {
+            for (Voice voice : voices) {
+                //if (voice.getName().startsWith(prefix)) {
+                result.put(voice.getName(), voice);
+                //}
+            }
+        }
+
+        return result;
+    }
+
     @Override
     public void onInit(int status) {
         //check for successful instantiation
         if (status == TextToSpeech.SUCCESS) {
-            if (textToSpeech.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_AVAILABLE)
+            if (textToSpeech.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_AVAILABLE) {
                 textToSpeech.setLanguage(Locale.getDefault());
+            }
+            voiceMap = createVoiceMap(textToSpeech.getVoices(), "en-");
+            voices = new ArrayList<>(voiceMap.keySet());
         } else if (status == TextToSpeech.ERROR) {
             Toast.makeText(this, "Sorry! Text To Speech failed...", Toast.LENGTH_LONG).show();
         }
@@ -212,7 +241,11 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 break;
             case R.id.groupSettings:
                 intent = new Intent(HomeActivity.this, SettingsActivity.class);
-                break;
+                intent.putStringArrayListExtra("voices", voices);
+                intent.putExtra("current_voice", textToSpeech != null ? textToSpeech.getVoice().getName() : "");
+                intent.putExtra("is_mute", isMute);
+                HomeActivity.this.startActivityForResult(intent, SETTINGS_CODE);
+                return;
             case R.id.groupLogOut:
                 intent = new Intent(HomeActivity.this, LoginActivity.class);
                 break;
