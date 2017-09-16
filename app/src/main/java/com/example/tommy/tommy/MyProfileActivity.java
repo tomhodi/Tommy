@@ -48,7 +48,7 @@ public class MyProfileActivity extends AppCompatActivity {
         // set user's data to the different Views
         tvKnow.setText("Hey " + userName + ", this is what I know about you so far : ");
         tvNameContent.setText(name);
-        setDateOfBirthText();
+        tvDateOfBirthContent.setText(dateOfBirth);
         if (kosher.equals("1")) {
             cbKosher.setChecked(true);
         }
@@ -110,20 +110,5 @@ public class MyProfileActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(MyProfileActivity.this);
 
         queue.add(updateRequest);
-    }
-
-    public void setDateOfBirthText() {
-        if (dateOfBirth.equals("")) {
-            return;
-        }
-        String reversedDate = "";
-        String[] parts = dateOfBirth.split("-");
-        if (parts.length > 0) {
-            for (int i = parts.length - 1; i >= 0; i--) {
-                reversedDate = reversedDate.concat(parts[i] + '/');
-            }
-            reversedDate = reversedDate.substring(0, reversedDate.length() - 1);
-        }
-        tvDateOfBirthContent.setText(reversedDate);
     }
 }

@@ -49,11 +49,9 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-
                     DateDialog dateDialog = new DateDialog(v);
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     dateDialog.show(ft, "DatePicker");
-
                 }
             }
         });
@@ -99,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 };
                 setName();
-                RegisterRequest registerRequest = new RegisterRequest(userName, password, name, dateOfBirth, responseListener);
+                RegisterRequest registerRequest = new RegisterRequest(userName, password, name, DateDialog.convertDateToSqlFormat(dateOfBirth), responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
             }
@@ -112,22 +110,6 @@ public class RegisterActivity extends AppCompatActivity {
         first = Character.toUpperCase(first);
         sec = Character.toUpperCase(sec);
         name = first + firstName.substring(1, firstName.length()) + ' ' + sec + lastName.substring(1, lastName.length());
-    }
-
-    public void setDate() {
-        if (dateOfBirth.equals("")) {
-            return;
-        }
-        String reversedDate = "";
-        String[] parts = dateOfBirth.split("-");
-        if (parts.length > 0) {
-            for (int i = parts.length - 1; i >= 0; i--) {
-                reversedDate = reversedDate.concat(parts[i] + '/');
-            }
-            reversedDate = reversedDate.substring(0, reversedDate.length() - 1);
-        }
-
-        etDateOfBirth.setText(reversedDate);
     }
 
     @Override

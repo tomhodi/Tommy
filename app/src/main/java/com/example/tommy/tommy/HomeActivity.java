@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -47,7 +48,8 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private String kosher;
     private String glutenFree;
     private TextToSpeech textToSpeech = null;
-    private Map<String, Voice> voiceMap = null;
+    private Map<String, Voice> nameToVoiceMap = null;
+    private Map<Voice, String> voiceToNameMap = null;
     private ArrayList<String> voices = new ArrayList<>();
 
     public static final int VOICE_RECOGNITION_CODE = 0;
@@ -71,6 +73,9 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         dateOfBirth = intent.getStringExtra("dateOfBirth");
         password = intent.getStringExtra("password");
 
+        // Init voice maps
+        nameToVoiceMap = new HashMap<>();
+        voiceToNameMap = new HashMap<>();
 
         // set main action listener
         etUserText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -133,8 +138,8 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 if (resultCode == RESULT_OK) {
                     isMute = data.getBooleanExtra("is_mute", false);
                     String selectedVoice = data.getStringExtra("selected_voice");
-                    if (textToSpeech != null && voiceMap != null && voiceMap.containsKey(selectedVoice)) {
-                        textToSpeech.setVoice(voiceMap.get(selectedVoice));
+                    if (textToSpeech != null && nameToVoiceMap != null && nameToVoiceMap.containsKey(selectedVoice)) {
+                        textToSpeech.setVoice(nameToVoiceMap.get(selectedVoice));
                     }
                 }
                 break;
@@ -188,17 +193,22 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
-    private Map<String, Voice> createVoiceMap(Set<Voice> voices, String prefix) {
-        Map<String, Voice> result = new HashMap<>();
+    private void fillVoiceMap(Set<Voice> voices, String prefix) {
+        Map<String, Integer> countryCount = new HashMap<>();
         if (voices != null) {
             for (Voice voice : voices) {
-                //if (voice.getName().startsWith(prefix)) {
-                result.put(voice.getName(), voice);
-                //}
+                if (voice.getName().startsWith(prefix)) {
+                    String country = voice.getLocale().getDisplayCountry();
+                    if (!countryCount.containsKey(country)) {
+                        countryCount.put(country, 0);
+                    }
+                    countryCount.put(country, 1 + countryCount.get(country));
+                    String name = country + " " + countryCount.get(country);
+                    nameToVoiceMap.put(name, voice);
+                    voiceToNameMap.put(voice, name);
+                }
             }
         }
-
-        return result;
     }
 
     @Override
@@ -208,8 +218,9 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
             if (textToSpeech.isLanguageAvailable(Locale.getDefault()) == TextToSpeech.LANG_AVAILABLE) {
                 textToSpeech.setLanguage(Locale.getDefault());
             }
-            voiceMap = createVoiceMap(textToSpeech.getVoices(), "en-");
-            voices = new ArrayList<>(voiceMap.keySet());
+            fillVoiceMap(textToSpeech.getVoices(), "en-");
+            voices = new ArrayList<>(nameToVoiceMap.keySet());
+            Collections.sort(voices);
         } else if (status == TextToSpeech.ERROR) {
             Toast.makeText(this, "Sorry! Text To Speech failed...", Toast.LENGTH_LONG).show();
         }
@@ -242,7 +253,8 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
             case R.id.groupSettings:
                 intent = new Intent(HomeActivity.this, SettingsActivity.class);
                 intent.putStringArrayListExtra("voices", voices);
-                intent.putExtra("current_voice", textToSpeech != null ? textToSpeech.getVoice().getName() : "");
+                intent.putExtra("current_voice",
+                        textToSpeech != null && voiceToNameMap.containsKey(textToSpeech.getVoice()) ? voiceToNameMap.get(textToSpeech.getVoice()) : "");
                 intent.putExtra("is_mute", isMute);
                 HomeActivity.this.startActivityForResult(intent, SETTINGS_CODE);
                 return;

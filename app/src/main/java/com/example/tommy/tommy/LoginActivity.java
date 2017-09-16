@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {
                                 String name = jsonResponse.getString("name");
-                                String dateOfBirth = jsonResponse.getString("date_of_birth");
+                                String dateOfBirth = DateDialog.convertDateFromSqlFormat(jsonResponse.getString("date_of_birth"));
                                 String kosher = jsonResponse.getString("kosher");
                                 String glutenFree = jsonResponse.getString("gluten_free");
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
