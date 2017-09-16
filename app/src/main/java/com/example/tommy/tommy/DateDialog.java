@@ -26,7 +26,7 @@ import static android.R.attr.format;
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private EditText txtDate;
     private static final DateFormat sqlFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static final DateFormat appFormat = new SimpleDateFormat("MM/dd/yyyy");
+    private static final DateFormat appFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public DateDialog(View view) {
         txtDate = (EditText) view;
