@@ -25,8 +25,8 @@ import static android.R.attr.format;
 @SuppressLint("ValidFragment")
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private EditText txtDate;
-    private static final DateFormat sqlFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static final DateFormat appFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private static final DateFormat sqlFormat = new SimpleDateFormat("yyyy-M-d");
+    private static final DateFormat appFormat = new SimpleDateFormat("d/M/yyyy");
 
     public DateDialog(View view) {
         txtDate = (EditText) view;
@@ -59,7 +59,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
     public static boolean validateDate(String str) {
         try {
             Date date = appFormat.parse(str);
-            return true;
+            return appFormat.format(date).equals(str);
         } catch (ParseException e) {
             return false;
         }

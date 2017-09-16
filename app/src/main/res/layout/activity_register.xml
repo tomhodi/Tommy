@@ -37,14 +37,14 @@
         android:id="@+id/etUserName"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="User Name"
-        android:inputType="textPersonName"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_alignLeft="@+id/etLastName"
         android:layout_alignStart="@+id/etLastName"
-        android:layout_below="@+id/etLastName" />
+        android:layout_below="@+id/etLastName"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <EditText
         android:id="@+id/etPassword"

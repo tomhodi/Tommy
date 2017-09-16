@@ -46,7 +46,7 @@ public class MyProfileActivity extends AppCompatActivity {
         glutenFree = intent.getStringExtra("glutenFree");
 
         // set user's data to the different Views
-        tvKnow.setText("Hey " + userName + ", this is what I know about you so far: ");
+        tvKnow.setText("Hey " + userName + ", here is what I know about you so far: ");
         tvNameContent.setText(name);
         tvDateOfBirthContent.setText(dateOfBirth);
         if (kosher.equals("1")) {
