@@ -56,6 +56,15 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         return convertDate(str, sqlFormat, appFormat);
     }
 
+    public static boolean validateDate(String str) {
+        try {
+            Date date = appFormat.parse(str);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
     private static String convertDate(String str, DateFormat inFormat, DateFormat outFormat) {
         Date date;
         try {

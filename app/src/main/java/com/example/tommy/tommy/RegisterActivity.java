@@ -22,9 +22,9 @@ import org.json.JSONObject;
 public class RegisterActivity extends AppCompatActivity {
     private static final int viewMaxLength = 16;
     private static final String invalidStrLen = "must be none empty and contain at most " + String.valueOf(viewMaxLength) + " characters.";
-    private static final String invalidStrFirstChar = "first character must not be white space.";
-    private static final String invalidDate = "Please pick a Date.";
-    private static final String userNameOccupied = "is already occupied, please choose other User Name";
+    private static final String invalidStrFirstChar = "shouldn't start with a white space.";
+    private static final String invalidDate = "Invalid Date, please pick a date in dd/mm/yyyy format.";
+    private static final String userNameOccupied = "is already occupied, please pick another username.";
 
     private EditText etFirstName, etLastName, etUserName, etDateOfBirth, etPassword;
     private String name, userName, password, firstName, lastName, dateOfBirth, reversedDate;
@@ -145,7 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
             etUserName.setError("User Name " + invalidStrLen);
             valid = false;
         }
-        if (dateOfBirth.isEmpty()) {
+        if (dateOfBirth.isEmpty() || !DateDialog.validateDate(dateOfBirth)) {
             etDateOfBirth.setError(invalidDate);
             valid = false;
         }
