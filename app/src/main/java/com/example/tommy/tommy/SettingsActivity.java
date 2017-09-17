@@ -1,7 +1,6 @@
 package com.example.tommy.tommy;
 
 import android.content.Intent;
-import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,9 +12,6 @@ import android.widget.Spinner;
 import android.widget.ToggleButton;
 
 import java.util.List;
-import java.util.Set;
-
-import static android.R.id.toggle;
 
 public class SettingsActivity extends AppCompatActivity {
     Intent intent;
