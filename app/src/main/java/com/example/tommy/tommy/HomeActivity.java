@@ -35,8 +35,8 @@ import java.util.Set;
 
 public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     public boolean isMute = false;
-    private final String host = "192.168.1.4";
-    private final int port = 2345;
+    private final String host = "18.220.131.76";
+    private final int port = 51600;
     private TextView tvResponse;
     private EditText etUserText;
     private FloatingActionButton bMic;
