@@ -119,7 +119,8 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
             case VOICE_RECOGNITION_CODE:
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    etUserText.setText(result.get(0));
+                    userText = result.get(0);
+                    etUserText.setText(userText);
                     sendRequest();
                 }
                 break;

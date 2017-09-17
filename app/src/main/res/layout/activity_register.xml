@@ -17,7 +17,7 @@
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_editor_absoluteY="7dp"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="19dp"
+        android:layout_alignStart="@+id/etLastName"
         android:layout_marginTop="14dp" />
 
     <EditText
@@ -29,22 +29,20 @@
         android:inputType="textPersonName"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_alignLeft="@+id/etFirstName"
-        android:layout_alignStart="@+id/etFirstName"
-        android:layout_below="@+id/etFirstName" />
+        android:layout_below="@+id/etFirstName"
+        android:layout_alignStart="@+id/etUserName" />
 
     <EditText
         android:id="@+id/etUserName"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etLastName"
-        android:layout_alignStart="@+id/etLastName"
-        android:layout_below="@+id/etLastName"
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_below="@+id/etLastName"
+        android:layout_alignStart="@+id/etPassword" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -55,22 +53,20 @@
         android:inputType="textPersonName"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_alignLeft="@+id/etUserName"
-        android:layout_alignStart="@+id/etUserName"
-        android:layout_below="@+id/etUserName" />
+        android:layout_below="@+id/etUserName"
+        android:layout_alignStart="@+id/etDateOfBirth" />
 
     <EditText
         android:id="@+id/etDateOfBirth"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etPassword"
-        android:layout_alignStart="@+id/etPassword"
-        android:layout_below="@+id/etPassword"
         android:ems="10"
         android:hint="Date Of Birth"
         android:inputType="date"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_below="@+id/etPassword"
+        android:layout_alignStart="@+id/bRegister" />
 
     <Button
         android:id="@+id/bRegister"

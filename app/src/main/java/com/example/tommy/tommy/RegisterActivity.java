@@ -86,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 RegisterActivity.this.startActivity(intent);
                             } else if (userNameExist) {
-                                etUserName.setError("User Name " + userNameOccupied);
+                                etUserName.setError("Username " + userNameOccupied);
                                 return;
                             } else {
                                 registerAlertDialog.show();
@@ -142,7 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
             valid = false;
         }
         if (userName.length() > viewMaxLength || userName.isEmpty()) {
-            etUserName.setError("User Name " + invalidStrLen);
+            etUserName.setError("Username " + invalidStrLen);
             valid = false;
         }
         if (dateOfBirth.isEmpty() || !DateDialog.validateDate(dateOfBirth)) {
