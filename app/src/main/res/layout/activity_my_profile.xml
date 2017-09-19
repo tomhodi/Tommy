@@ -6,16 +6,15 @@
     android:layout_height="match_parent"
     tools:context="com.example.tommy.tommy.HomeActivity">
 
-
     <TextView
         android:id="@+id/tvKnow"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="30dp"
-        android:text="TextView"
-        android:textSize="18sp"
+        android:layout_marginTop="15dp"
+        android:text="@string/my_profile_default_title"
+        android:textSize="16sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
@@ -28,7 +27,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginStart="15dp"
         android:layout_below="@+id/tvKnow"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="Name:" />
 
 
@@ -41,26 +40,26 @@
         android:layout_marginStart="15dp"
         android:layout_alignStart="@+id/tvName"
         android:layout_below="@+id/tvName"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:text="Date Of Birth:" />
 
     <TextView
         android:id="@+id/tvNameContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/tvName"
-        android:layout_marginLeft="10dp"
         android:layout_alignBaseline="@+id/tvName"
-        android:text="TextView" />
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/tvName"
+        android:text="@string/my_profile_unknown_field" />
 
     <TextView
         android:id="@+id/tvDateOfBirthContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/tvDateOfBirth"
-        android:layout_marginLeft="10dp"
         android:layout_alignBaseline="@+id/tvDateOfBirth"
-        android:text="TextView" />
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/tvDateOfBirth"
+        android:text="@string/my_profile_unknown_field" />
 
 
     <TextView
@@ -72,9 +71,9 @@
         android:layout_marginStart="15dp"
         android:layout_alignStart="@+id/tvDateOfBirth"
         android:layout_below="@+id/tvDateOfBirth"
-        android:layout_marginTop="40dp"
-        android:textSize="18sp"
-        android:text="Special preferences:" />
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        android:text="Special Preferences:" />
 
     <CheckBox
         android:id="@+id/cbKosher"
@@ -82,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/tvSpecialPr"
         android:layout_below="@+id/tvSpecialPr"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:text="Kosher"
         android:onClick="selectItem" />
 

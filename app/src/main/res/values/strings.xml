@@ -17,10 +17,14 @@
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."
     </string>
-    <string name="about_us_content">"Hi! I'm Tommy, an intelligent personal asistant that learns and improves from my experience with users.\nI can answer questions and make recommendations about restaurants and bars in Tel Aviv like -"
+    <!-- About Us Strings -->
+    <string name="about_us_content">"Hi! I'm Tommy, an intelligent personal assistant that learns and improves from my experience with users.\nI can answer questions and make recommendations about restaurants and bars in Tel Aviv like -"
     </string>
-    <string name="about_us_example_1">"What are the top rated restaurants in the city?</string>
-    <string name="about_us_example_2">"Is the Beer Bazaar open at the moment?</string>
-    <string name="about_us_example_3">"What is the best gluten free restaurant near me?</string>
+    <string name="about_us_example_1">"What are the top rated restaurants in the city?"</string>
+    <string name="about_us_example_2">"Is the Beer Bazaar open at the moment?"</string>
+    <string name="about_us_example_3">"What is the best gluten free restaurant near me?"</string>
+    <!-- My Profile Strings -->
+    <string name="my_profile_default_title">"Here is what I know about you so far:"</string>
+    <string name="my_profile_unknown_field">"?"</string>
 </resources>
 

@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,10 +23,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         final EditText etUsername = (EditText) findViewById(R.id.etUsername);
         final EditText etPassword = (EditText) findViewById(R.id.etPassword);
-
         final Button bLogin = (Button) findViewById(R.id.bLogin);
         final TextView registerLink = (TextView) findViewById(R.id.tvRegisterHere);
 
@@ -50,17 +50,8 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {
-                                String name = jsonResponse.getString("name");
-                                String dateOfBirth = DateDialog.convertDateFromSqlFormat(jsonResponse.getString("date_of_birth"));
-                                String kosher = jsonResponse.getString("kosher");
-                                String glutenFree = jsonResponse.getString("gluten_free");
                                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                 intent.putExtra("username", username);
-                                intent.putExtra("password", password);
-                                intent.putExtra("name", name);
-                                intent.putExtra("dateOfBirth", dateOfBirth);
-                                intent.putExtra("kosher", kosher);
-                                intent.putExtra("glutenFree", glutenFree);
                                 LoginActivity.this.startActivity(intent);
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);

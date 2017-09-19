@@ -17,7 +17,7 @@
         android:inputType="text"
         android:maxLines="1"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="16dp"
+        tools:layout_editor_absoluteY="15dp"
         android:layout_above="@+id/bMic"
         android:layout_centerHorizontal="true" />
 
@@ -43,15 +43,5 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="14dp" />
-
-
-    <!--<ImageButton-->
-    <!--android:id="@+id/SettingsButton"-->
-    <!--android:layout_width="50dp"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_alignParentStart="true"-->
-    <!--app:srcCompat="@drawable/fifty" />-->
-
 
 </RelativeLayout>

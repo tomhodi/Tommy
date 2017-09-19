@@ -18,16 +18,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-
 public class RegisterActivity extends AppCompatActivity {
     private static final int viewMaxLength = 16;
     private static final String invalidStrLen = "must be none empty and contain at most " + String.valueOf(viewMaxLength) + " characters.";
     private static final String invalidStrFirstChar = "shouldn't start with a white space.";
     private static final String invalidDate = "Invalid Date, please pick a date in dd/mm/yyyy format.";
-    private static final String userNameOccupied = "is already occupied, please pick another username.";
+    private static final String usernameOccupied = "is already occupied, please pick another username.";
 
-    private EditText etFirstName, etLastName, etUserName, etDateOfBirth, etPassword;
-    private String name, userName, password, firstName, lastName, dateOfBirth, reversedDate;
+    private EditText etFirstName, etLastName, etUsername, etDateOfBirth, etPassword;
+    private String name, username, password, firstName, lastName, dateOfBirth, reversedDate;
     private Button bRegister;
 
     @Override
@@ -39,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
         // get Views
         etFirstName = (EditText) findViewById(R.id.etFirstName);
         etLastName = (EditText) findViewById(R.id.etLastName);
-        etUserName = (EditText) findViewById(R.id.etUserName);
+        etUsername = (EditText) findViewById(R.id.etUsername);
         etDateOfBirth = (EditText) findViewById(R.id.etDateOfBirth);
         etPassword = (EditText) findViewById(R.id.etPassword);
         bRegister = (Button) findViewById(R.id.bRegister);
@@ -66,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v){
                 firstName = etFirstName.getText().toString();
                 lastName = etLastName.getText().toString();
-                userName = etUserName.getText().toString();
+                username = etUsername.getText().toString();
                 password = etPassword.getText().toString();
                 dateOfBirth = etDateOfBirth.getText().toString();
                 if (!validateRegister()) {
@@ -81,12 +80,12 @@ public class RegisterActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
-                            boolean userNameExist = jsonResponse.getBoolean("userNameExist");
+                            boolean usernameExist = jsonResponse.getBoolean("usernameExist");
                             if (success){
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 RegisterActivity.this.startActivity(intent);
-                            } else if (userNameExist) {
-                                etUserName.setError("Username " + userNameOccupied);
+                            } else if (usernameExist) {
+                                etUsername.setError("Username " + usernameOccupied);
                                 return;
                             } else {
                                 registerAlertDialog.show();
@@ -96,20 +95,20 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 };
-                setName();
-                RegisterRequest registerRequest = new RegisterRequest(userName, password, name, DateDialog.convertDateToSqlFormat(dateOfBirth), responseListener);
+                setNameUpperCase();
+                RegisterRequest registerRequest = new RegisterRequest(username, password, name, DateDialog.convertDateToSqlFormat(dateOfBirth), responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
             }
         });
     }
 
-    public void setName() {
+    public void setNameUpperCase() {
         char first = firstName.charAt(0);
-        char sec = lastName.charAt(0);
+        char last = lastName.charAt(0);
         first = Character.toUpperCase(first);
-        sec = Character.toUpperCase(sec);
-        name = first + firstName.substring(1, firstName.length()) + ' ' + sec + lastName.substring(1, lastName.length());
+        last = Character.toUpperCase(last);
+        name = first + firstName.substring(1, firstName.length()) + ' ' + last + lastName.substring(1, lastName.length());
     }
 
     @Override
@@ -141,8 +140,8 @@ public class RegisterActivity extends AppCompatActivity {
             etLastName.setError("Last Name " + invalidStrFirstChar);
             valid = false;
         }
-        if (userName.length() > viewMaxLength || userName.isEmpty()) {
-            etUserName.setError("Username " + invalidStrLen);
+        if (username.length() > viewMaxLength || username.isEmpty()) {
+            etUsername.setError("Username " + invalidStrLen);
             valid = false;
         }
         if (dateOfBirth.isEmpty() || !DateDialog.validateDate(dateOfBirth)) {

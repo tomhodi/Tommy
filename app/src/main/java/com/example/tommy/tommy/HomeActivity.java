@@ -33,6 +33,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+
 public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     public boolean isMute = false;
     private final String host = "18.220.131.76";
@@ -41,12 +42,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private EditText etUserText;
     private FloatingActionButton bMic;
     private String userText;
-    private String userName;
-    private String password;
-    private String name;
-    private String dateOfBirth;
-    private String kosher;
-    private String glutenFree;
+    private String username;
     private TextToSpeech textToSpeech = null;
     private Map<String, Voice> nameToVoiceMap = null;
     private Map<Voice, String> voiceToNameMap = null;
@@ -65,13 +61,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         bMic = (FloatingActionButton) findViewById(R.id.bMic);
 
         Intent intent = getIntent();
-        userName = intent.getStringExtra("username");
-        name = intent.getStringExtra("name");
-        dateOfBirth = intent.getStringExtra("dateOfBirth");
-        kosher = intent.getStringExtra("kosher");
-        glutenFree = intent.getStringExtra("glutenFree");
-        dateOfBirth = intent.getStringExtra("dateOfBirth");
-        password = intent.getStringExtra("password");
+        username = intent.getStringExtra("username");
 
         // Init voice maps
         nameToVoiceMap = new HashMap<>();
@@ -148,7 +138,6 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     public void hideKeyboard() {
-        // etUserText.setText("");
         etUserText.clearFocus();
         InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(etUserText.getWindowToken(), 0);
@@ -162,7 +151,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     Socket clientSocket = new Socket(host, port);
                     OutputStream outToServer = clientSocket.getOutputStream();
                     DataOutputStream out = new DataOutputStream(outToServer);
-                    out.writeUTF("Query[" + userName + "]: " + userText);
+                    out.writeUTF("Query[" + username + "]: " + userText);
                     InputStream inFromServer = clientSocket.getInputStream();
                     DataInputStream in = new DataInputStream(inFromServer);
                     final String response = in.readUTF();
@@ -243,13 +232,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 break;
             case R.id.groupMyProfile:
                 intent = new Intent(HomeActivity.this, MyProfileActivity.class);
-                intent.putExtra("userName", userName);
-                intent.putExtra("password", password);
-                intent.putExtra("name", name);
-                intent.putExtra("dateOfBirth", dateOfBirth);
-                intent.putExtra("kosher", kosher);
-                intent.putExtra("glutenFree", glutenFree);
-
+                intent.putExtra("username", username);
                 break;
             case R.id.groupSettings:
                 intent = new Intent(HomeActivity.this, SettingsActivity.class);
