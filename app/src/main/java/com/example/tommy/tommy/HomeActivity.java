@@ -3,12 +3,12 @@ package com.example.tommy.tommy;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,11 +20,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -149,12 +148,11 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
             public void run() {
                 try {
                     Socket clientSocket = new Socket(host, port);
-                    OutputStream outToServer = clientSocket.getOutputStream();
-                    DataOutputStream out = new DataOutputStream(outToServer);
-                    out.writeUTF("Query[" + username + "]: " + userText);
-                    InputStream inFromServer = clientSocket.getInputStream();
-                    DataInputStream in = new DataInputStream(inFromServer);
-                    final String response = in.readUTF();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                    out.println("<" + username + ">");
+                    out.println(userText);
+                    final String response = in.readLine();
                     clientSocket.close();
                     runOnUiThread(new Runnable() {
                         @Override
