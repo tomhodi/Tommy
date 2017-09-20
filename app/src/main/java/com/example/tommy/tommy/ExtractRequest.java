@@ -11,11 +11,11 @@ import java.util.Map;
  */
 
 public class ExtractRequest extends StringRequest {
-    private static final String LOGIN_REQUEST_URL = "http://tomhodi.000webhostapp.com/extract.php";
+    private static final String EXTRACT_REQUEST_URL = "http://tomhodi.000webhostapp.com/extract.php";
     private Map<String, String> params;
 
     ExtractRequest(String username, Response.Listener<String> listener) {
-        super(Method.POST, LOGIN_REQUEST_URL, listener, null);
+        super(Method.POST, EXTRACT_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("username", username);
     }
