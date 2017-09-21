@@ -20,11 +20,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,9 +29,8 @@ import java.util.Set;
 
 
 public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
-    public boolean isMute = false;
-    private final String host = "18.220.131.76";
-    private final int port = 51600;
+    private ClientThread clientThread;
+    private boolean isMute = false;
     private TextView tvResponse;
     private EditText etUserText;
     private FloatingActionButton bMic;
@@ -62,6 +56,10 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
 
+        // Initiate client threads
+        clientThread = new ClientThread(HomeActivity.this, username);
+        clientThread.start();
+
         // Init voice maps
         nameToVoiceMap = new HashMap<>();
         voiceToNameMap = new HashMap<>();
@@ -72,8 +70,8 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 userText = etUserText.getText().toString();
                 hideKeyboard();
-                if (actionId == EditorInfo.IME_ACTION_SEARCH && !userText.isEmpty()) {
-                    sendRequest();
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    clientThread.sendRequest(userText);
                     return true;
                 }
                 return false;
@@ -110,7 +108,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     userText = result.get(0);
                     etUserText.setText(userText);
-                    sendRequest();
+                    clientThread.sendRequest(userText);
                 }
                 break;
             case TEXT_TO_SPEECH_CODE:
@@ -142,31 +140,15 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         in.hideSoftInputFromWindow(etUserText.getWindowToken(), 0);
     }
 
-    public void sendRequest() {
-        new Thread(new Runnable() {
+    public void respond(final String response) {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Socket clientSocket = new Socket(host, port);
-                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                    out.println("<" + username + ">");
-                    out.println(userText);
-                    final String response = in.readLine();
-                    clientSocket.close();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            tvResponse.setText(response);
-                            speakResponse();
-                            etUserText.setText("");
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                tvResponse.setText(response);
+                speakResponse();
+                etUserText.setText("");
             }
-        }).start();
+        });
     }
 
     private void speakResponse() {
@@ -242,6 +224,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 return;
             case R.id.groupLogOut:
                 intent = new Intent(HomeActivity.this, LoginActivity.class);
+                clientThread.kill();
                 break;
             default:
                 return;
