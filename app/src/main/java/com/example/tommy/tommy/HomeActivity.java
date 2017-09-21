@@ -43,7 +43,8 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     public static final int VOICE_RECOGNITION_CODE = 0;
     public static final int TEXT_TO_SPEECH_CODE = 1;
-    public static final int SETTINGS_CODE = 2;
+    public static final int MY_PROFILE_CODE = 2;
+    public static final int SETTINGS_CODE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,9 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
                     startActivity(installTTSIntent);
                 }
+                break;
+            case MY_PROFILE_CODE:
+                clientThread.sendMessage("update_user_info");
                 break;
             case SETTINGS_CODE:
                 if (resultCode == RESULT_OK) {
@@ -213,7 +217,8 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
             case R.id.groupMyProfile:
                 intent = new Intent(HomeActivity.this, MyProfileActivity.class);
                 intent.putExtra("username", username);
-                break;
+                HomeActivity.this.startActivityForResult(intent, MY_PROFILE_CODE);
+                return;
             case R.id.groupSettings:
                 intent = new Intent(HomeActivity.this, SettingsActivity.class);
                 intent.putStringArrayListExtra("voices", voices);

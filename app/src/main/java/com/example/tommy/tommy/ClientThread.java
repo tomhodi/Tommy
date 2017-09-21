@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static android.R.attr.type;
+
 /**
  * Created by tom on 9/20/2017.
  */
@@ -46,6 +48,18 @@ public class ClientThread extends Thread {
     public void sendRequest(String request) {
         if (!request.isEmpty()) {
             requestQueue.add(request);
+        }
+    }
+
+    public void sendMessage(String type, String value) {
+        if (!type.isEmpty()) {
+            sendRequest(buildMessage(type, value));
+        }
+    }
+
+    public void sendMessage(String msg) {
+        if (!msg.isEmpty()) {
+            sendMessage(msg, "");
         }
     }
 
