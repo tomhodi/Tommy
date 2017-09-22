@@ -71,9 +71,8 @@ public class ClientThread extends Thread {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    PrintWriter out = null;
                     try {
-                        out = new PrintWriter(clientSocket.getOutputStream(), true);
+                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                         out.println(buildMessage("username", username));
                         while (!kill) {
                             try {
