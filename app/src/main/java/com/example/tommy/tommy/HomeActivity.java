@@ -185,6 +185,14 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         return str;
     }
 
+    private String addEndOfSentenceSymbol(String str) {
+        if (str.endsWith(".") || str.endsWith("?") || str.endsWith("!")) {
+            return str;
+        }
+
+        return str + ".";
+    }
+
     private String prepareQueryForDisplay(String str) {
         if (str == null) {
             return "";
@@ -196,7 +204,8 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         if (str == null) {
             return "";
         }
-        return capitalizeFirstLetter(str);
+
+        return addEndOfSentenceSymbol(capitalizeFirstLetter(str));
     }
 
     private void clearUserText() {
