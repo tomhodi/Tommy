@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -9,36 +8,37 @@
 
     <TextView
         android:id="@+id/tvVoices"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="26dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/start_margin"
+        android:layout_marginTop="@dimen/top_margin"
+        android:layout_width="wrap_content"
         android:text="Voices:"
         android:textSize="18sp"
         android:textStyle="bold" />
 
     <ToggleButton
         android:id="@+id/tbMute"
+
+        android:background="@drawable/mute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:width="25dp"
         android:height="25dp"
-        android:background="@drawable/mute"
+        android:width="25dp"
         android:minHeight="0dp"
         android:minWidth="0dp"
         android:text="ToggleButton"
         android:textOff=""
         android:textOn=""
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="85dp"
         android:layout_alignTop="@+id/tvVoices"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="15dp" />
+        android:layout_marginEnd="@dimen/end_margin" />
 
     <Spinner
         android:id="@+id/sVoices"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvVoices"

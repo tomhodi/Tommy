@@ -19,14 +19,21 @@ import org.json.JSONObject;
 
 
 public class RegisterActivity extends AppCompatActivity {
-    private static final int viewMaxLength = 16;
-    private static final String invalidStrLen = "must be none empty and contain at most " + String.valueOf(viewMaxLength) + " characters.";
-    private static final String invalidStrFirstChar = "shouldn't start with a white space.";
-    private static final String invalidDate = "Invalid Date, please pick a date in dd/mm/yyyy format.";
-    private static final String usernameOccupied = "is already occupied, please pick another username.";
+    private static final int nameMinLength = 1;
+    private static final int usernameMinLength = 4;
+    private static final int passwordMinLength = 4;
+    private static final int commonMaxLength = 16;
+    private static final String firstNameStr = "First name";
+    private static final String lastNameStr = "Last name";
+    private static final String UsernameStr = "Username";
+    private static final String PasswordStr = "Password";
+    private static final String invalidStrLenFormat = "%s must be %d to %d characters long.";
+    private static final String invalidStrFirstCharFormat = "%s shouldn't start with a white space.";
+    private static final String invalidDateFormat = "Invalid Date, please pick a date in dd/mm/yyyy format.";
+    private static final String usernameOccupiedFormat = "%s is already occupied, please pick another username.";
 
     private EditText etFirstName, etLastName, etUsername, etDateOfBirth, etPassword;
-    private String name, username, password, firstName, lastName, dateOfBirth, reversedDate;
+    private String name, username, password, firstName, lastName, dateOfBirth;
     private Button bRegister;
 
     @Override
@@ -85,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 RegisterActivity.this.startActivity(intent);
                             } else if (usernameExist) {
-                                etUsername.setError("Username " + usernameOccupied);
+                                etUsername.setError(String.format(usernameOccupiedFormat, username));
                                 return;
                             } else {
                                 registerAlertDialog.show();
@@ -124,32 +131,32 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean validateRegister() {
         boolean valid = true;
-        if (firstName.length() > viewMaxLength || firstName.isEmpty()) {
-            etFirstName.setError("First Name " + invalidStrLen);
+        if (firstName.length() < nameMinLength || firstName.length() > commonMaxLength) {
+            etFirstName.setError(String.format(invalidStrLenFormat, firstNameStr, nameMinLength, commonMaxLength));
             valid = false;
         }
         if (!firstName.isEmpty() && Character.isWhitespace(firstName.charAt(0))) {
-            etFirstName.setError("First Name " + invalidStrFirstChar);
+            etFirstName.setError(String.format(invalidStrFirstCharFormat, firstNameStr));
             valid = false;
         }
-        if (lastName.length() > viewMaxLength || lastName.isEmpty()) {
-            etLastName.setError("Last Name " + invalidStrLen);
+        if (lastName.length() < nameMinLength || lastName.length() > commonMaxLength) {
+            etLastName.setError(String.format(invalidStrLenFormat, lastNameStr, nameMinLength, commonMaxLength));
             valid = false;
         }
         if (!lastName.isEmpty() && Character.isWhitespace(lastName.charAt(0))) {
-            etLastName.setError("Last Name " + invalidStrFirstChar);
+            etLastName.setError(String.format(invalidStrFirstCharFormat, lastNameStr));
             valid = false;
         }
-        if (username.length() > viewMaxLength || username.isEmpty()) {
-            etUsername.setError("Username " + invalidStrLen);
+        if (username.length() < usernameMinLength || username.length() > commonMaxLength) {
+            etUsername.setError(String.format(invalidStrLenFormat, UsernameStr, usernameMinLength, commonMaxLength));
             valid = false;
         }
         if (dateOfBirth.isEmpty() || !DateDialog.validateDate(dateOfBirth)) {
-            etDateOfBirth.setError(invalidDate);
+            etDateOfBirth.setError(invalidDateFormat);
             valid = false;
         }
-        if (password.length() > viewMaxLength || password.isEmpty()) {
-            etPassword.setError("Password " + invalidStrLen);
+        if (password.length() < passwordMinLength || password.length() > commonMaxLength) {
+            etPassword.setError(String.format(invalidStrLenFormat, PasswordStr, passwordMinLength, commonMaxLength));
             valid = false;
         }
 

@@ -14,9 +14,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +33,13 @@ import java.util.Set;
 public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     private ClientThread clientThread;
     private boolean isMute = false;
-    private TextView tvResponse;
+    public boolean isFirstRound = true;
+    private TextView tvFirstQuestion;
+    private TextView tvFirstQuestionResponse;
+    private TextView tvSecondQuestion;
+    private TextView tvSecondQuestionResponse;
+    private TextView tvThirdQuestion;
+    private TextView tvThirdQuestionResponse;
     private EditText etUserText;
     private FloatingActionButton bMic;
     private String userText;
@@ -40,6 +48,8 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private Map<String, Voice> nameToVoiceMap = null;
     private Map<Voice, String> voiceToNameMap = null;
     private ArrayList<String> voices = new ArrayList<>();
+
+    public static final String quotationFormat = "\"%s\"";
 
     public static final int VOICE_RECOGNITION_CODE = 0;
     public static final int TEXT_TO_SPEECH_CODE = 1;
@@ -50,7 +60,12 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        tvResponse = (TextView) findViewById(R.id.tvResponse);
+        tvFirstQuestion = (TextView) findViewById(R.id.tvFirstQuestion);
+        tvFirstQuestionResponse = (TextView) findViewById(R.id.tvFirstQuestionResponse);
+        tvSecondQuestion = (TextView) findViewById(R.id.tvSecondQuestion);
+        tvSecondQuestionResponse = (TextView) findViewById(R.id.tvSecondQuestionResponse);
+        tvThirdQuestion = (TextView) findViewById(R.id.tvThirdQuestion);
+        tvThirdQuestionResponse = (TextView) findViewById(R.id.tvThirdQuestionResponse);
         etUserText = (EditText) findViewById(R.id.etUserText);
         bMic = (FloatingActionButton) findViewById(R.id.bMic);
 
@@ -144,13 +159,87 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         in.hideSoftInputFromWindow(etUserText.getWindowToken(), 0);
     }
 
-    public void respond(final String response) {
+    public void processResponse(String response) {
+        Message msg = new Message(response);
+        clearUserText();
+        switch (msg.getType()) {
+            case QUERY:
+                respond(response);
+                break;
+            case OPEN_MY_PROFILE:
+                openMyProfile();
+                break;
+            case OPEN_SETTINGS:
+                openSettings();
+                break;
+            case LOG_OUT:
+                logOut();
+                break;
+        }
+    }
+
+    private String capitalizeFirstLetter(String str) {
+        if (str.length() > 0) {
+            return str.substring(0, 1).toUpperCase() + str.substring(1);
+        }
+        return str;
+    }
+
+    private String prepareQueryForDisplay(String str) {
+        if (str == null) {
+            return "";
+        }
+        return String.format(quotationFormat, capitalizeFirstLetter(str));
+    }
+
+    private String prepareAnswerForDisplay(String str) {
+        if (str == null) {
+            return "";
+        }
+        return capitalizeFirstLetter(str);
+    }
+
+    private void clearUserText() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                tvResponse.setText(response);
+                etUserText.setText(null);
+            }
+        });
+    }
+
+    private void updateTopTextView() {
+        tvFirstQuestion.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+        MarginLayoutParams mlp = (MarginLayoutParams) tvFirstQuestion.getLayoutParams();
+        int topMargin = getResources().getDimensionPixelSize(R.dimen.top_margin);
+        mlp.setMargins(mlp.leftMargin, topMargin, mlp.rightMargin, mlp.bottomMargin);
+        tvFirstQuestion.getRootView().requestLayout();
+    }
+
+    private void rotateSession(final String response) {
+        String firstQuery = tvFirstQuestion.getText().toString();
+        String firstAnswer = tvFirstQuestionResponse.getText().toString();
+        String secondQuery = tvSecondQuestion.getText().toString();
+        String secondAnswer = tvSecondQuestionResponse.getText().toString();
+
+        tvFirstQuestion.setText(prepareQueryForDisplay(userText));
+        tvFirstQuestionResponse.setText(prepareAnswerForDisplay(response));
+        if (!isFirstRound) {
+            tvSecondQuestion.setText(firstQuery);
+            tvSecondQuestionResponse.setText(firstAnswer);
+            tvThirdQuestion.setText(secondQuery);
+            tvThirdQuestionResponse.setText(secondAnswer);
+        }
+        isFirstRound = false;
+    }
+
+    private void respond(final String response) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                updateTopTextView();
+                rotateSession(response);
                 speakResponse();
-                etUserText.setText("");
             }
         });
     }
@@ -159,7 +248,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         if (textToSpeech == null || isMute) {
             return;
         }
-        String response = tvResponse.getText().toString();
+        String response = tvFirstQuestionResponse.getText().toString();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null, null);
         } else {
@@ -208,32 +297,46 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         return true;
     }
 
+    private void openAboutUs() {
+        Intent intent = new Intent(HomeActivity.this, AboutUsActivity.class);
+        HomeActivity.this.startActivity(intent);
+    }
+
+    private void openMyProfile() {
+        Intent intent = new Intent(HomeActivity.this, MyProfileActivity.class);
+        intent.putExtra("username", username);
+        HomeActivity.this.startActivityForResult(intent, MY_PROFILE_CODE);
+    }
+
+    private void openSettings() {
+        Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+        intent.putStringArrayListExtra("voices", voices);
+        intent.putExtra("current_voice",
+                textToSpeech != null && voiceToNameMap.containsKey(textToSpeech.getVoice()) ? voiceToNameMap.get(textToSpeech.getVoice()) : "");
+        intent.putExtra("is_mute", isMute);
+        HomeActivity.this.startActivityForResult(intent, SETTINGS_CODE);
+    }
+
+    public void logOut() {
+        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+        clientThread.kill();
+        HomeActivity.this.startActivity(intent);
+    }
+
     public void onGroupItemClick(MenuItem item) {
-        Intent intent;
         switch (item.getItemId()) {
             case R.id.groupAboutUs:
-                intent = new Intent(HomeActivity.this, AboutUsActivity.class);
+                openAboutUs();
                 break;
             case R.id.groupMyProfile:
-                intent = new Intent(HomeActivity.this, MyProfileActivity.class);
-                intent.putExtra("username", username);
-                HomeActivity.this.startActivityForResult(intent, MY_PROFILE_CODE);
-                return;
-            case R.id.groupSettings:
-                intent = new Intent(HomeActivity.this, SettingsActivity.class);
-                intent.putStringArrayListExtra("voices", voices);
-                intent.putExtra("current_voice",
-                        textToSpeech != null && voiceToNameMap.containsKey(textToSpeech.getVoice()) ? voiceToNameMap.get(textToSpeech.getVoice()) : "");
-                intent.putExtra("is_mute", isMute);
-                HomeActivity.this.startActivityForResult(intent, SETTINGS_CODE);
-                return;
-            case R.id.groupLogOut:
-                intent = new Intent(HomeActivity.this, LoginActivity.class);
-                clientThread.kill();
+                openMyProfile();
                 break;
-            default:
-                return;
+            case R.id.groupSettings:
+                openSettings();
+                break;
+            case R.id.groupLogOut:
+                logOut();
+                break;
         }
-        HomeActivity.this.startActivity(intent);
     }
 }

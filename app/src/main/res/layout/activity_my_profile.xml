@@ -8,89 +8,96 @@
 
     <TextView
         android:id="@+id/tvKnow"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
+
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="@dimen/start_margin"
+        android:layout_marginEnd="@dimen/end_margin"
+        android:layout_marginTop="@dimen/top_margin"
+        android:layout_width="wrap_content"
         android:text="@string/my_profile_default_title"
         android:textSize="16sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvName"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
 
         android:layout_alignParentLeft="true"
-        android:layout_marginStart="15dp"
         android:layout_below="@+id/tvKnow"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/start_margin"
         android:layout_marginTop="20dp"
-        android:text="Name:" />
+        android:layout_width="wrap_content"
+        android:text="@string/my_profile_name_text"
+        android:textStyle="bold" />
 
 
     <TextView
         android:id="@+id/tvDateOfBirth"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
         android:layout_alignParentLeft="true"
-        android:layout_marginStart="15dp"
         android:layout_alignStart="@+id/tvName"
         android:layout_below="@+id/tvName"
-        android:layout_marginTop="15dp"
-        android:text="Date Of Birth:" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/start_margin"
+        android:layout_marginTop="@dimen/below_margin"
+        android:layout_width="wrap_content"
+        android:text="@string/my_profile_date_of_birth_text"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvNameContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/tvName"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/tvName"
+        android:layout_width="wrap_content"
         android:text="@string/my_profile_unknown_field" />
 
     <TextView
         android:id="@+id/tvDateOfBirthContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
         android:layout_alignBaseline="@+id/tvDateOfBirth"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/tvDateOfBirth"
+        android:layout_width="wrap_content"
         android:text="@string/my_profile_unknown_field" />
 
 
     <TextView
         android:id="@+id/tvSpecialPr"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
         android:layout_alignParentLeft="true"
-        android:layout_marginStart="15dp"
         android:layout_alignStart="@+id/tvDateOfBirth"
         android:layout_below="@+id/tvDateOfBirth"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
         android:textSize="16sp"
-        android:text="Special Preferences:" />
+        android:text="@string/my_profile_special_preferences_text"
+        android:textStyle="bold" />
 
     <CheckBox
         android:id="@+id/cbKosher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
         android:layout_alignStart="@+id/tvSpecialPr"
         android:layout_below="@+id/tvSpecialPr"
+        android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Kosher"
-        android:onClick="selectItem" />
+        android:onClick="selectItem"
+        android:text="@string/my_profile_kosher_text"
+        android:layout_width="wrap_content" />
 
     <CheckBox
         android:id="@+id/cbGlutenFree"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
         android:layout_alignStart="@+id/cbKosher"
         android:layout_below="@+id/cbKosher"
-        android:text="Gluten Free"
-        android:onClick="selectItem" />
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:onClick="selectItem"
+        android:text="@string/my_profile_gluten_free_text" />
 </RelativeLayout>

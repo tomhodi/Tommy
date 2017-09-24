@@ -5,26 +5,34 @@
     <string name="title_my_profile">My Profile</string>
     <string name="title_settings">Settings</string>
     <string name="title_log_out">Log Out</string>
-
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."
-    </string>
+    <!-- login Strings -->
+    <string name="login_button_text">login</string>
+    <string name="login_Username_hint">Username</string>
+    <string name="login_Password_hint">Password</string>
+    <string name="login_register_text">Register Here</string>
+    <!-- Register Strings -->
+    <string name="register_first_name_hint">First Name</string>
+    <string name="register_last_name_hint">Last Name</string>
+    <string name="register_Username_hint">Username</string>
+    <string name="register_Password_hint">Password</string>
+    <string name="register_date_of_birth_hint">Date Of Birth</string>
+    <string name="register_button_text">login</string>
+    <!-- Home Strings -->
+    <string name="home_userText_hint">Ask me anything</string>
+    <string name="home_response_text">What can I help you with?</string>
     <!-- About Us Strings -->
     <string name="about_us_content">"Hi! I'm Tommy, an intelligent personal assistant that learns and improves from my experience with users.\nI can answer questions and make recommendations about restaurants and bars in Tel Aviv like -"
     </string>
-    <string name="about_us_example_1">"What are the top rated restaurants in the city?"</string>
-    <string name="about_us_example_2">"Is the Beer Bazaar open at the moment?"</string>
-    <string name="about_us_example_3">"What is the best gluten free restaurant near me?"</string>
+    <string name="about_us_example_1">What are the top rated restaurants in the city?</string>
+    <string name="about_us_example_2">Is the Beer Bazaar open at the moment?</string>
+    <string name="about_us_example_3">What is the best gluten free restaurant near me?</string>
     <!-- My Profile Strings -->
     <string name="my_profile_default_title">"Here is what I know about you so far:"</string>
+    <string name="my_profile_name_text">"Name:"</string>
+    <string name="my_profile_date_of_birth_text">"Date Of Birth:"</string>
+    <string name="my_profile_special_preferences_text">"Special Preferences:"</string>
+    <string name="my_profile_kosher_text">"Kosher"</string>
+    <string name="my_profile_gluten_free_text">"Gluten Free"</string>
     <string name="my_profile_unknown_field">"?"</string>
 </resources>
 

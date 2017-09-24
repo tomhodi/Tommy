@@ -17,7 +17,6 @@ import static android.R.attr.type;
 public class ClientThread extends Thread {
     private static final String host = "18.220.131.76";
     private static final int port = 51600;
-    private static final String msgFormat = "<%s:%s>";
 
     private HomeActivity homeActivity;
     private String username;
@@ -35,14 +34,12 @@ public class ClientThread extends Thread {
     public void kill() {
         kill = true;
         try {
-            clientSocket.close();
+            if (clientSocket != null) {
+                clientSocket.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private static String buildMessage(String type, String value) {
-        return String.format(msgFormat, type, value);
     }
 
     public void sendRequest(String request) {
@@ -53,13 +50,13 @@ public class ClientThread extends Thread {
 
     public void sendMessage(String type, String value) {
         if (!type.isEmpty()) {
-            sendRequest(buildMessage(type, value));
+            sendRequest(new Message(type, value).build());
         }
     }
 
-    public void sendMessage(String msg) {
-        if (!msg.isEmpty()) {
-            sendMessage(msg, "");
+    public void sendMessage(String type) {
+        if (!type.isEmpty()) {
+            sendMessage(type, "");
         }
     }
 
@@ -73,7 +70,7 @@ public class ClientThread extends Thread {
                 public void run() {
                     try {
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                        out.println(buildMessage("username", username));
+                        out.println(new Message("username", username).build());
                         while (!kill) {
                             try {
                                 String request = requestQueue.take();
@@ -95,7 +92,11 @@ public class ClientThread extends Thread {
                         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                         while (!kill) {
                             String response = in.readLine();
-                            homeActivity.respond(response);
+                            if (response == null) {
+                                kill = true;
+                            } else {
+                                homeActivity.processResponse(response);
+                            }
                         }
                     } catch (IOException e) {
                         e.printStackTrace();

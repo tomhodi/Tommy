@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="question_answer_max_lines">3</integer>
+    <integer name="user_text_max_lines">1</integer>
+
+</resources>
