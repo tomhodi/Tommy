@@ -73,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .setMessage("Register Failed")
                 .setNegativeButton("Retry", null)
                 .create();
-
+        // set register button listener
         bRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 };
+
                 setNameUpperCase();
                 RegisterRequest registerRequest = new RegisterRequest(username, password, name, DateDialog.convertDateToSqlFormat(dateOfBirth), responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
@@ -117,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    public void setNameUpperCase() {
+    private void setNameUpperCase() {
         char first = firstName.charAt(0);
         char last = lastName.charAt(0);
         first = Character.toUpperCase(first);
@@ -125,6 +126,9 @@ public class RegisterActivity extends AppCompatActivity {
         name = first + firstName.substring(1, firstName.length()) + ' ' + last + lastName.substring(1, lastName.length());
     }
 
+    /**
+     * Terminates the activity when clicking the back button.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

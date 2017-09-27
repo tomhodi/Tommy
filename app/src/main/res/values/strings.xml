@@ -25,7 +25,7 @@
     </string>
     <string name="about_us_example_1">What are the best restaurants in town?</string>
     <string name="about_us_example_2">Is the Beer Bazaar open today?</string>
-    <string name="about_us_example_3">Show me restaurants that are kosher and gluten free</string>
+    <string name="about_us_example_3">Show me restaurants that are kosher and gluten free.</string>
     <!-- My Profile -->
     <string name="my_profile_default_title">"Here is what I know about you so far:"</string>
     <string name="my_profile_name_text">"Name:"</string>
@@ -33,6 +33,7 @@
     <string name="my_profile_special_preferences_text">"Special Preferences:"</string>
     <string name="my_profile_kosher_text">"Kosher"</string>
     <string name="my_profile_gluten_free_text">"Gluten Free"</string>
+    <string name="my_profile_vegetarian_text">"Vegetarian"</string>
     <string name="my_profile_unknown_field">"?"</string>
 
 </resources>

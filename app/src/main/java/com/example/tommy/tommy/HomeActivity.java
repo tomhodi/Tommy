@@ -104,6 +104,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
         });
 
+        // set the microphone button listener
         bMic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,12 +163,18 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
+    /**
+     * Hides the keyboard.
+     */
     public void hideKeyboard() {
         etUserText.clearFocus();
         InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(etUserText.getWindowToken(), 0);
     }
 
+    /**
+     * processes the response from the server.
+     */
     public void processResponse(String response) {
         Message msg = new Message(response);
         clearUserText();
@@ -242,7 +249,9 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
         tvFirstQuestion.setText(prepareQueryForDisplay(userText));
         tvFirstQuestionResponse.setText(prepareAnswerForDisplay(response));
-        if (!isFirstRound) {
+        if (isFirstRound) {
+            updateTopTextView();
+        } else {
             tvSecondQuestion.setText(firstQuery);
             tvSecondQuestionResponse.setText(firstAnswer);
             tvThirdQuestion.setText(secondQuery);
@@ -255,7 +264,6 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                updateTopTextView();
                 rotateSession(response);
                 speakResponse();
             }
@@ -292,6 +300,9 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
+    /**
+     * Initialize textToSpeech method.
+     */
     @Override
     public void onInit(int status) {
         //check for successful instantiation
@@ -307,6 +318,9 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
+    /**
+     * Initialize Option menu.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -335,12 +349,15 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         HomeActivity.this.startActivityForResult(intent, SETTINGS_CODE);
     }
 
-    public void logOut() {
+    private void logOut() {
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         clientThread.kill();
         HomeActivity.this.startActivity(intent);
     }
 
+    /**
+     * Opens the selected item activity.
+     */
     public void onGroupItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.groupAboutUs:

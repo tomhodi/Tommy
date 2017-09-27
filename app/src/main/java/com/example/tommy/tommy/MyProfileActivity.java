@@ -29,8 +29,8 @@ public class MyProfileActivity extends AppCompatActivity {
     private static final String trueStr = "1";
 
     private TextView tvKnow, tvNameContent, tvDateOfBirthContent;
-    private CheckBox cbGlutenFree, cbKosher;
-    private String name, username, dateOfBirth, kosher, glutenFree;
+    private CheckBox cbGlutenFree, cbKosher, cbVegetarian;
+    private String name, username, dateOfBirth, kosher, glutenFree, vegetarian;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,9 @@ public class MyProfileActivity extends AppCompatActivity {
         tvKnow = (TextView) findViewById(R.id.tvKnow);
         tvNameContent = (TextView) findViewById(R.id.tvNameContent);
         tvDateOfBirthContent = (TextView) findViewById(R.id.tvDateOfBirthContent);
-        cbGlutenFree = (CheckBox) findViewById(R.id.cbGlutenFree);
         cbKosher = (CheckBox) findViewById(R.id.cbKosher);
+        cbGlutenFree = (CheckBox) findViewById(R.id.cbGlutenFree);
+        cbVegetarian = (CheckBox) findViewById(R.id.cbVegetarian);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
@@ -60,8 +61,15 @@ public class MyProfileActivity extends AppCompatActivity {
         if (glutenFree.equals(trueStr)) {
             cbGlutenFree.setChecked(true);
         }
+        if (vegetarian.equals(trueStr)) {
+            cbVegetarian.setChecked(true);
+        }
     }
 
+    /**
+     * Updates the user Preferences if needed and terminates the activity when
+     * clicking the back button.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -73,24 +81,22 @@ public class MyProfileActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Updates kosher, gluten_free and vegetarian values when their buttons are pressed.
+     */
     public void selectItem(View view) {
         boolean isSelected = ((CheckBox) view).isChecked();
+        String boolStr = isSelected ? trueStr : falseStr;
         int viewId = view.getId();
         switch (viewId) {
             case (R.id.cbKosher):
-                if (isSelected) {
-                    kosher = trueStr;
-                } else {
-                    kosher = falseStr;
-                }
+                kosher = boolStr;
                 break;
-
             case (R.id.cbGlutenFree):
-                if (isSelected) {
-                    glutenFree = trueStr;
-                } else {
-                    glutenFree = falseStr;
-                }
+                glutenFree = boolStr;
+                break;
+            case (R.id.cbVegetarian):
+                vegetarian = boolStr;
                 break;
         }
     }
@@ -110,7 +116,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 }
             }
         };
-        updateRequest updateRequest = new updateRequest(username, kosher, glutenFree, responseListener);
+        updateRequest updateRequest = new updateRequest(username, kosher, glutenFree, vegetarian, responseListener);
         RequestQueue queue = Volley.newRequestQueue(MyProfileActivity.this);
         queue.add(updateRequest);
     }
@@ -127,6 +133,7 @@ public class MyProfileActivity extends AppCompatActivity {
                         dateOfBirth = DateDialog.convertDateFromSqlFormat(jsonResponse.getString("date_of_birth"));
                         kosher = jsonResponse.getString("kosher");
                         glutenFree = jsonResponse.getString("gluten_free");
+                        vegetarian = jsonResponse.getString("vegetarian");
                         populateProfile();
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MyProfileActivity.this);

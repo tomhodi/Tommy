@@ -9,7 +9,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Created by tom on 9/20/2017.
+ * Class responsible for communicating with the server.
+ * Concurrently sends requests added to the queue and receives responses from the server.
+ * The received responses are passed to HomeActivity and processed there.
  */
 
 public class ClientThread extends Thread {
@@ -29,6 +31,9 @@ public class ClientThread extends Thread {
         kill = false;
     }
 
+    /**
+     * Terminates the connection with the server.
+     */
     public void kill() {
         kill = true;
         try {
@@ -40,24 +45,38 @@ public class ClientThread extends Thread {
         }
     }
 
+    /**
+     * Sends a new request to the server.
+     */
     public void sendRequest(String request) {
         if (!request.isEmpty()) {
             requestQueue.add(request);
         }
     }
 
+    /**
+     * Sends a new message to the server without value.
+     */
     public void sendMessage(String type, String value) {
         if (!type.isEmpty()) {
             sendRequest(new Message(type, value).build());
         }
     }
 
+    /**
+     * Sends a new message to the server with value.
+     */
     public void sendMessage(String type) {
         if (!type.isEmpty()) {
             sendMessage(type, "");
         }
     }
 
+    /**
+     * Establishes a connection with the the server.
+     * The 'producer' part sends requests from the requestQueue to the server.
+     * The 'consumer' part receives requests from the server.
+     */
     @Override
     public void run() {
         try {

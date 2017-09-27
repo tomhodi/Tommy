@@ -1,19 +1,24 @@
 package com.example.tommy.tommy;
 
-/**
- * Created by tomho on 23/09/2017.
- */
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A class providing message structure for sending and receiving requests from the server.
+ * A message consists of a type and optionally a value.
+ */
+
 public class Message {
+
     private static final Pattern msgPattern = Pattern.compile("<\\s*(.*?)\\s*:\\s*(.*?)\\s*>");
     private static final String msgFormat = "<%s:%s>";
 
     private MessageType type;
     private String value;
 
+    /**
+     * Parses a message given in '<Key:Value>' format.
+     */
     public Message(String msg) {
         Matcher m = msgPattern.matcher(msg);
         if (m.matches()) {
@@ -55,6 +60,9 @@ public class Message {
         return value;
     }
 
+    /**
+     * Returns the message in '<Key:Value>' format.
+     */
     public String build() {
         return String.format(msgFormat, type, value);
     }

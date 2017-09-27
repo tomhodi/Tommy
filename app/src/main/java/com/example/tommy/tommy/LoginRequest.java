@@ -7,11 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by tomho on 07/08/2017.
+ * Sends a login request to the SQL database.
+ * Passes the received info back to the login activity.
  */
 
 public class LoginRequest extends StringRequest {
+
     private static final String LOGIN_REQUEST_URL = "http://tomhodi.000webhostapp.com/login.php";
+
     private Map<String, String> params;
 
     LoginRequest(String username, String password, Response.Listener<String> listener) {
@@ -21,6 +24,9 @@ public class LoginRequest extends StringRequest {
         params.put("password", password);
     }
 
+    /**
+     * Returns the parameters to be sent to the php.
+     */
     @Override
     public Map<String, String> getParams() {
         return params;

@@ -37,7 +37,7 @@ public class SettingsActivity extends AppCompatActivity {
         voices = intent.getStringArrayListExtra("voices");
         selectedVoice = intent.getStringExtra("current_voice");
         isMute = intent.getBooleanExtra("is_mute", false);
-
+        // set mute toggle button according to the specified is_mute
         ToggleButton tbMute = (ToggleButton) findViewById(R.id.tbMute);
         tbMute.setChecked(isMute);
         tbMute.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -45,12 +45,13 @@ public class SettingsActivity extends AppCompatActivity {
                 isMute = isChecked;
             }
         });
-
+        // fill spinner with all available voices
         Spinner sVoices = (Spinner) findViewById(R.id.sVoices);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, voices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sVoices.setAdapter(adapter);
+        // set selected voice if exists in list
         int selectedVoiceIndex = voices.indexOf(selectedVoice);
         if (selectedVoiceIndex != -1) {
             sVoices.setSelection(selectedVoiceIndex);
@@ -68,6 +69,10 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Terminates the activity when clicking the back button.
+     * Sends the selected voice and mute setup back to the home activity.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

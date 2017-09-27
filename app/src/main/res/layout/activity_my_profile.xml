@@ -98,4 +98,14 @@
         android:layout_width="wrap_content"
         android:onClick="selectItem"
         android:text="@string/my_profile_gluten_free_text" />
+
+    <CheckBox
+        android:id="@+id/cbVegetarian"
+
+        android:layout_alignStart="@+id/cbGlutenFree"
+        android:layout_below="@+id/cbGlutenFree"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:onClick="selectItem"
+        android:text="@string/my_profile_vegetarian_text" />
 </RelativeLayout>

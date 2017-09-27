@@ -7,11 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * Sends an extract user info request to the SQL database.
+ * Passes the received info back to the my profile activity.
  */
-
 public class ExtractRequest extends StringRequest {
+
     private static final String EXTRACT_REQUEST_URL = "http://tomhodi.000webhostapp.com/extract.php";
+
     private Map<String, String> params;
 
     ExtractRequest(String username, Response.Listener<String> listener) {
@@ -20,6 +22,9 @@ public class ExtractRequest extends StringRequest {
         params.put("username", username);
     }
 
+    /**
+     * Returns the parameters to be sent to the php.
+     */
     @Override
     public Map<String, String> getParams() {
         return params;
