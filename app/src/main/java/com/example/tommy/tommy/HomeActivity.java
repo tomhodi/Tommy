@@ -123,7 +123,6 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     userText = result.get(0);
-                    etUserText.setText(userText);
                     clientThread.sendRequest(userText);
                 }
                 break;
