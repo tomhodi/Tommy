@@ -8,8 +8,6 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static android.R.attr.type;
-
 /**
  * Created by tom on 9/20/2017.
  */

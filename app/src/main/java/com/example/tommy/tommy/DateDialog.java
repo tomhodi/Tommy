@@ -1,12 +1,5 @@
 package com.example.tommy.tommy;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -16,7 +9,11 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import static android.R.attr.format;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by tomho on 07/08/2017.
