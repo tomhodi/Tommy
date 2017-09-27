@@ -2,8 +2,8 @@ package com.example.tommy.tommy;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +15,15 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+/**
+ * Login page activity.
+ * Transfers to:
+ * <ul>
+ * <li>Register page, by clicking the register button </li>
+ * <li>Home page, by entering correct credentials and clicking the login button</li>
+ * </ul>
+ */
 
 public class LoginActivity extends AppCompatActivity {
 

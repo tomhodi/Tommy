@@ -29,6 +29,16 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Home page activity.
+ * Transfers to:
+ * <ul>
+ * <li>About Us page, by clicking the About Us drop down menu item </li>
+ * <li>My Profile page, by clicking the My Profile drop down menu item </li>
+ * <li>Settings page, by clicking the Settings drop down menu item </li>
+ * <li>Login page, by clicking the Log Out drop down menu item </li>
+ * </ul>
+ */
 
 public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     private ClientThread clientThread;

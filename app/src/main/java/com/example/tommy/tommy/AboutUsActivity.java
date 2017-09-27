@@ -4,6 +4,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+/**
+ * About Us page activity.
+ * Transfers to:
+ * <ul>
+ * <li>Home page, by clicking the back button </li>
+ * </ul>
+ */
+
 public class AboutUsActivity extends AppCompatActivity {
 
     @Override

@@ -17,6 +17,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Register page activity.
+ * Transfers to:
+ * <ul>
+ * <li>Login page, by entering valid user information and clicking the register button </li>
+ * </ul>
+ */
+
 public class RegisterActivity extends AppCompatActivity {
     private static final int nameMinLength = 1;
     private static final int usernameMinLength = 4;
@@ -68,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         bRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 firstName = etFirstName.getText().toString();
                 lastName = etLastName.getText().toString();
                 username = etUsername.getText().toString();
@@ -79,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                Response.Listener<String> responseListener = new Response.Listener<String>(){
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
 
                     @Override
                     public void onResponse(String response) {
@@ -87,7 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
                             boolean usernameExist = jsonResponse.getBoolean("usernameExist");
-                            if (success){
+                            if (success) {
                                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                 RegisterActivity.this.startActivity(intent);
                             } else if (usernameExist) {
