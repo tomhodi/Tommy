@@ -23,26 +23,26 @@
         android:id="@+id/tbMute"
 
         android:background="@drawable/mute"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:height="25dp"
-        android:width="25dp"
-        android:minHeight="0dp"
-        android:minWidth="0dp"
-        android:text="ToggleButton"
-        android:textOff=""
-        android:textOn=""
         android:layout_alignTop="@+id/tvVoices"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/end_margin" />
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/end_margin"
+        android:layout_width="wrap_content"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:width="25dp"
+        android:text="ToggleButton"
+        android:textOff=""
+        android:textOn="" />
 
     <Spinner
         android:id="@+id/sVoices"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignTop="@+id/tvVoices"
+        android:layout_height="wrap_content"
         android:layout_marginStart="19dp"
+        android:layout_width="wrap_content"
         android:layout_toEndOf="@+id/tvVoices"
         android:layout_toStartOf="@+id/tbMute" />
 

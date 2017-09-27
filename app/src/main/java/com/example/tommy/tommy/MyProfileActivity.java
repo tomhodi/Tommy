@@ -15,6 +15,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MyProfileActivity extends AppCompatActivity {
+    private static final String falseStr = "0";
+    private static final String trueStr = "1";
+
     private TextView tvKnow, tvNameContent, tvDateOfBirthContent;
     private CheckBox cbGlutenFree, cbKosher;
     private String name, username, dateOfBirth, kosher, glutenFree;
@@ -38,13 +41,13 @@ public class MyProfileActivity extends AppCompatActivity {
         extractUserData();
     }
 
-    public void populateProfile() {
+    private void populateProfile() {
         tvNameContent.setText(name);
         tvDateOfBirthContent.setText(dateOfBirth);
-        if (kosher.equals("1")) {
+        if (kosher.equals(trueStr)) {
             cbKosher.setChecked(true);
         }
-        if (glutenFree.equals("1")) {
+        if (glutenFree.equals(trueStr)) {
             cbGlutenFree.setChecked(true);
         }
     }
@@ -66,23 +69,23 @@ public class MyProfileActivity extends AppCompatActivity {
         switch (viewId) {
             case (R.id.cbKosher):
                 if (isSelected) {
-                    kosher = "1";
+                    kosher = trueStr;
                 } else {
-                    kosher = "0";
+                    kosher = falseStr;
                 }
                 break;
 
             case (R.id.cbGlutenFree):
                 if (isSelected) {
-                    glutenFree = "1";
+                    glutenFree = trueStr;
                 } else {
-                    glutenFree = "0";
+                    glutenFree = falseStr;
                 }
                 break;
         }
     }
 
-    public void updatePref() {
+    private void updatePref() {
         Response.Listener<String> responseListener = new Response.Listener<String>() {
 
             @Override
@@ -102,7 +105,7 @@ public class MyProfileActivity extends AppCompatActivity {
         queue.add(updateRequest);
     }
 
-    public void extractUserData() {
+    private void extractUserData() {
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

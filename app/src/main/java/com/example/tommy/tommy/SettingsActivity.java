@@ -14,10 +14,10 @@ import android.widget.ToggleButton;
 import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
-    Intent intent;
-    List<String> voices;
-    String selectedVoice;
-    boolean isMute;
+    private Intent intent;
+    private List<String> voices;
+    private String selectedVoice;
+    private boolean isMute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -68,7 +68,7 @@ public class Message {
         OPEN_SETTINGS,
         LOG_OUT;
 
-        public static MessageType parse(String str) throws IllegalArgumentException {
+        private static MessageType parse(String str) throws IllegalArgumentException {
             return MessageType.valueOf(str.toUpperCase());
         }
     }

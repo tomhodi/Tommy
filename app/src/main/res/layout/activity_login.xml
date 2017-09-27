@@ -37,9 +37,9 @@
         android:layout_below="@+id/etPassword"
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
         android:layout_marginStart="@dimen/start_margin"
         android:layout_marginEnd="@dimen/end_margin"
+        android:layout_width="match_parent"
         android:text="@string/login_button_text" />
 
     <TextView
