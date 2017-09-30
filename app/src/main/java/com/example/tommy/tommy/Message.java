@@ -17,7 +17,7 @@ public class Message {
     private String value;
 
     /**
-     * Parses a message given in '<Key:Value>' format.
+     * Parses a message given in {@code '<KEY:VALUE>'} format.
      */
     public Message(String msg) {
         Matcher m = msgPattern.matcher(msg);
@@ -61,7 +61,7 @@ public class Message {
     }
 
     /**
-     * Returns the message in '<Key:Value>' format.
+     * Returns the message in {@code '<KEY:VALUE>'} format.
      */
     public String build() {
         return String.format(msgFormat, type, value);
