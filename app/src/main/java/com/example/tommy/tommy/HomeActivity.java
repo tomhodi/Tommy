@@ -27,7 +27,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Home page activity.
@@ -58,6 +61,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private Map<String, Voice> nameToVoiceMap = null;
     private Map<Voice, String> voiceToNameMap = null;
     private ArrayList<String> voices = new ArrayList<>();
+    private Lock rotationLock = new ReentrantLock();
 
     public static final String quotationFormat = "\"%s\"";
 
@@ -65,6 +69,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     public static final int TEXT_TO_SPEECH_CODE = 1;
     public static final int MY_PROFILE_CODE = 2;
     public static final int SETTINGS_CODE = 3;
+    public static final int LOG_OUT_CODE = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +165,9 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                     }
                 }
                 break;
+            case LOG_OUT_CODE:
+                reEstablishConnection();
+                break;
         }
     }
 
@@ -173,7 +181,26 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
-     * processes the response from the server.
+     * Establishes a new connection with the server.
+     */
+    public void reEstablishConnection() {
+        clientThread = new ClientThread(HomeActivity.this, username);
+        clientThread.start();
+    }
+
+    private void changeRandomVoice() {
+        if (textToSpeech != null && voices.size() > 1) {
+            int index = new Random().nextInt(voices.size() - 1);
+            String currentVoice = voiceToNameMap.containsKey(textToSpeech.getVoice()) ? voiceToNameMap.get(textToSpeech.getVoice()) : "";
+            if (voices.get(index).equals(currentVoice)) {
+                index = voices.size() - 1;
+            }
+            textToSpeech.setVoice(nameToVoiceMap.get(voices.get(index)));
+        }
+    }
+
+    /**
+     * Processes the response from the server.
      */
     public void processResponse(String response) {
         Message msg = new Message(response);
@@ -187,6 +214,18 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 break;
             case OPEN_SETTINGS:
                 openSettings();
+                break;
+            case CHANGE_VOICE:
+                changeRandomVoice();
+                respond(msg.getValue());
+                break;
+            case MUTE:
+                isMute = true;
+                respond(msg.getValue());
+                break;
+            case UNMUTE:
+                isMute = false;
+                respond(msg.getValue());
                 break;
             case LOG_OUT:
                 logOut();
@@ -242,6 +281,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     private void rotateSession(final String response) {
+        rotationLock.lock();
         String firstQuery = tvFirstQuestion.getText().toString();
         String firstAnswer = tvFirstQuestionResponse.getText().toString();
         String secondQuery = tvSecondQuestion.getText().toString();
@@ -258,16 +298,19 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
             tvThirdQuestionResponse.setText(secondAnswer);
         }
         isFirstRound = false;
+        rotationLock.unlock();
     }
 
     private void respond(final String response) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                rotateSession(response);
-                speakResponse();
-            }
-        });
+        if (response != null && !response.isEmpty()) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    rotateSession(response);
+                    speakResponse();
+                }
+            });
+        }
     }
 
     private void speakResponse() {
@@ -282,10 +325,10 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
-    private void fillVoiceMap(Set<Voice> voices, String prefix) {
+    private void fillVoiceMap(Set<Voice> allVoices, String prefix) {
         Map<String, Integer> countryCount = new HashMap<>();
-        if (voices != null) {
-            for (Voice voice : voices) {
+        if (allVoices != null) {
+            for (Voice voice : allVoices) {
                 if (voice.getName().startsWith(prefix)) {
                     String country = voice.getLocale().getDisplayCountry();
                     if (!countryCount.containsKey(country)) {
@@ -352,7 +395,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private void logOut() {
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         clientThread.kill();
-        HomeActivity.this.startActivity(intent);
+        HomeActivity.this.startActivityForResult(intent, LOG_OUT_CODE);
     }
 
     /**

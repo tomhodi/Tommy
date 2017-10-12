@@ -74,6 +74,9 @@ public class Message {
         UPDATE_USER_INFO,
         OPEN_MY_PROFILE,
         OPEN_SETTINGS,
+        CHANGE_VOICE,
+        MUTE,
+        UNMUTE,
         LOG_OUT;
 
         private static MessageType parse(String str) throws IllegalArgumentException {

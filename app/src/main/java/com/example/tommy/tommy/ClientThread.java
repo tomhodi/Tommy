@@ -17,6 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ClientThread extends Thread {
     private static final String host = "18.220.131.76";
     private static final int port = 51600;
+    private static final long reconnectionDelayInMillis = 2000;
 
     private HomeActivity homeActivity;
     private String username;
@@ -28,7 +29,18 @@ public class ClientThread extends Thread {
         this.homeActivity = homeActivity;
         this.username = username;
         this.requestQueue = new LinkedBlockingQueue<>();
+        clientSocket = null;
         kill = false;
+    }
+
+    private void closeSocket() {
+        try {
+            if (clientSocket != null && !clientSocket.isClosed()) {
+                clientSocket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -36,13 +48,8 @@ public class ClientThread extends Thread {
      */
     public void kill() {
         kill = true;
-        try {
-            if (clientSocket != null) {
-                clientSocket.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        requestQueue.add("");
+        closeSocket();
     }
 
     /**
@@ -72,56 +79,75 @@ public class ClientThread extends Thread {
         }
     }
 
+    private void connectToServer() {
+        boolean isConnected = false;
+        while (!kill && !isConnected) {
+            try {
+                clientSocket = new Socket(host, port);
+                isConnected = true;
+            } catch (IOException e) {
+                try {
+                    Thread.sleep(reconnectionDelayInMillis);
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                }
+            }
+        }
+    }
+
     /**
      * Establishes a connection with the the server.
-     * The 'producer' part sends requests from the requestQueue to the server.
-     * The 'consumer' part receives requests from the server.
+     * The 'producer' thread sends requests from the queue to the server.
+     * The 'consumer' thread receives requests from the server and passes them to the HomeActivity.
      */
     @Override
     public void run() {
-        try {
-            clientSocket = new Socket(host, port);
-            // Producer
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                        out.println(new Message("username", username).build());
-                        while (!kill) {
-                            try {
-                                String request = requestQueue.take();
+        connectToServer();
+        // Producer
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                    out.println(new Message("username", username).build());
+                    while (!kill) {
+                        try {
+                            String request = requestQueue.take();
+                            if (!kill) {
                                 out.println(request);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
                             }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }).start();
-            // Consumer
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                        while (!kill) {
-                            String response = in.readLine();
+            }
+        }).start();
+        // Consumer
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    while (!kill) {
+                        String response = in.readLine();
+                        if (!kill) {
                             if (response == null) {
-                                kill = true;
+                                homeActivity.reEstablishConnection();
+                                kill();
                             } else {
                                 homeActivity.processResponse(response);
                             }
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }).start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            }
+        }).start();
     }
 }
