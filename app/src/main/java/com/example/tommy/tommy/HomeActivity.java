@@ -344,7 +344,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
-     * Initialize textToSpeech method.
+     * Initializes textToSpeech method.
      */
     @Override
     public void onInit(int status) {
@@ -362,7 +362,7 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     /**
-     * Initialize Option menu.
+     * Initializes Option menu.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

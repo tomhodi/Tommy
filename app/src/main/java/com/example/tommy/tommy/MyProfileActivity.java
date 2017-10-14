@@ -3,6 +3,7 @@ package com.example.tommy.tommy;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +45,10 @@ public class MyProfileActivity extends AppCompatActivity {
         cbGlutenFree = (CheckBox) findViewById(R.id.cbGlutenFree);
         cbVegetarian = (CheckBox) findViewById(R.id.cbVegetarian);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
         tvKnow.setText("Hey " + username + ", here is what I know about you so far: ");
