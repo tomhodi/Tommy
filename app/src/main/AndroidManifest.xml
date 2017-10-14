@@ -26,7 +26,9 @@
         <activity
             android:name=".RegisterActivity"
             android:parentActivityName=".LoginActivity" />
-        <activity android:name=".HomeActivity" />
+        <activity
+            android:name=".HomeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".AboutUsActivity"
             android:label="About Us"
