@@ -62,7 +62,7 @@ public class ClientThread extends Thread {
     }
 
     /**
-     * Sends a new message to the server without value.
+     * Sends a new message to the server with a value.
      */
     public void sendMessage(String type, String value) {
         if (!type.isEmpty()) {
@@ -71,7 +71,7 @@ public class ClientThread extends Thread {
     }
 
     /**
-     * Sends a new message to the server with value.
+     * Sends a new message to the server without a value.
      */
     public void sendMessage(String type) {
         if (!type.isEmpty()) {

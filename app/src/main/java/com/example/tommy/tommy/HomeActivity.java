@@ -206,8 +206,8 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         Message msg = new Message(response);
         clearUserText();
         switch (msg.getType()) {
-            case QUERY:
-                respond(response);
+            case RESPONSE:
+                respond(msg.getValue());
                 break;
             case OPEN_MY_PROFILE:
                 openMyProfile();
@@ -233,14 +233,14 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         }
     }
 
-    private String capitalizeFirstLetter(String str) {
+    private static String capitalizeFirstLetter(String str) {
         if (str.length() > 0) {
             return str.substring(0, 1).toUpperCase() + str.substring(1);
         }
         return str;
     }
 
-    private String addEndOfSentenceSymbol(String str) {
+    private static String addEndOfSentenceSymbol(String str) {
         if (str.endsWith(".") || str.endsWith("?") || str.endsWith("!")) {
             return str;
         }
@@ -248,14 +248,14 @@ public class HomeActivity extends AppCompatActivity implements TextToSpeech.OnIn
         return str + ".";
     }
 
-    private String prepareQueryForDisplay(String str) {
+    private static String prepareQueryForDisplay(String str) {
         if (str == null) {
             return "";
         }
         return String.format(quotationFormat, capitalizeFirstLetter(str));
     }
 
-    private String prepareAnswerForDisplay(String str) {
+    private static String prepareAnswerForDisplay(String str) {
         if (str == null) {
             return "";
         }

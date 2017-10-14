@@ -109,8 +109,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
-                    if (success) {
-                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

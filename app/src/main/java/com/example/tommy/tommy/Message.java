@@ -29,7 +29,7 @@ public class Message {
             }
             this.value = m.group(2);
         } else {
-            this.type = MessageType.QUERY;
+            this.type = MessageType.RESPONSE;
             this.value = msg;
         }
     }
@@ -69,7 +69,7 @@ public class Message {
 
     public enum MessageType {
         UNKNOWN,
-        QUERY,
+        RESPONSE,
         USERNAME,
         UPDATE_USER_INFO,
         OPEN_MY_PROFILE,
